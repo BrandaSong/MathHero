@@ -2,7 +2,7 @@ name: 24/7 Hermes Math App Builder
 on:
   schedule:
     - cron: '0 */6 * * *' # Wakes up automatically every 6 hours, 24/7
-  workflow_dispatch: # Allows you to manually trigger it with 1 click anytime
+  workflow_dispatch: # Allows manual trigger with 1 click anytime
 
 jobs:
   run-agent:
@@ -11,14 +11,46 @@ jobs:
       - name: Checkout Code Base
         uses: actions/checkout@v4
 
-      - name: Deploy Hermes Agent Core
+      - name: Set Up Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install AI Core Dependencies
+        run: pip install openai
+
+      - name: Deploy Native Hermes Math Engine
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
-          curl -fsSL https://hermes-agent.ai | bash
-          export PATH="$HOME/.hermes/bin:$PATH"
+          python -c "
+          import os, json, openai
           
-          hermes run --model "nousresearch/hermes-3-llama-3-8b:free" --secret "${{ secrets.OPENROUTER_API_KEY }}" --task "
-          Act as a Malaysian Curriculum Specialist and Senior Developer. 
-          Inspect our repository files. Autonomously build and update the structural database for a Primary School (Ages 6-12) Math App named MathHero. 
-          Generate gamified, step-by-step interactive math question sets separated cleanly into local public system tracks (UASA / KSSM for SJKC and SK) and international curriculum tracks (IGCSE). 
-          Ensure all output files are committed back to the repository.
+          client = openai.OpenAI(
+              base_url='https://openrouter.ai',
+              api_key=os.environ['OPENROUTER_API_KEY']
+          )
+          
+          prompt = '''
+          Act as a Malaysian Curriculum Specialist and Senior Mobile App Developer. 
+          Analyze our workspace. Autonomously design and output a clean JSON database structural file for a Primary School (Ages 6-12) Math App named MathHero. 
+          Generate gamified, step-by-step interactive math question sets separated cleanly into local public system tracks (UASA / KSSM for SJKC and SK) and international curriculum tracks (IGCSE).
+          Output ONLY valid JSON code inside a clean dictionary layout.
+          '''
+          
+          response = client.chat.completions.create(
+              model='meta-llama/llama-3-8b-instruct:free',
+              messages=[{'role': 'user', 'content': prompt}]
+          )
+          
+          with open('math_syllabus_db.json', 'w') as f:
+              f.write(response.choices.message.content)
+          print('Syllabus file generated successfully!')
           "
+
+      - name: Commit and Save MathHero Files to Repository
+        run: |
+          git config --global user.name 'Hermes Agent Loop'
+          git config --global user.email 'hermes@agent.loop'
+          git add math_syllabus_db.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m 'Autonomously updated MathHero database framework' && git push)
