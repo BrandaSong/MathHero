@@ -1,0 +1,24 @@
+name: 24/7 Hermes Math App Builder
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Wakes up automatically every 6 hours, 24/7
+  workflow_dispatch: # Allows you to manually trigger it with 1 click anytime
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Base
+        uses: actions/checkout@v4
+
+      - name: Deploy Hermes Agent Core
+        run: |
+          curl -fsSL https://hermes-agent.ai | bash
+          export PATH="$HOME/.hermes/bin:$PATH"
+          
+          hermes run --model "nousresearch/hermes-3-llama-3-8b:free" --secret "${{ secrets.OPENROUTER_API_KEY }}" --task "
+          Act as a Malaysian Curriculum Specialist and Senior Developer. 
+          Inspect our repository files. Autonomously build and update the structural database for a Primary School (Ages 6-12) Math App named MathHero. 
+          Generate gamified, step-by-step interactive math question sets separated cleanly into local public system tracks (UASA / KSSM for SJKC and SK) and international curriculum tracks (IGCSE). 
+          Ensure all output files are committed back to the repository.
+          "
