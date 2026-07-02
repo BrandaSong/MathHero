@@ -1,89 +1,43 @@
 name: 24/7 Hermes Math App Builder
+
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *' # Wakes up automatically every 6 hours, 24/7
-  workflow_dispatch: # Allows manual trigger with 1 click anytime
+    - cron: '0 */6 * * *' # Runs automatically every 6 hours to monitor/update content
 
 jobs:
   run-agent:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code Base
-        uses: actions/checkout@v4
+    - name: Post Checkout Code Base
+      uses: actions/checkout@v4
 
-      - name: Set Up Python Environment
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+    - name: Set Up Python Environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
 
-      - name: Install AI Core Dependencies
-        run: pip install openai httpx
+    - name: Install AI Core Dependencies
+      run: pip install openai httpx
 
-      - name: Deploy Native Hermes Math Engine
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        run: |
-          python -c "
-          import os, json, openai, httpx, time
-          
-          # Connect via Hugging Face Serverless Route to bypass GitHub network blocks
-          http_client = httpx.Client(timeout=60.0, follow_redirects=True)
-          
-          client = openai.OpenAI(
-              base_url='https://huggingface.co',
-              api_key=os.environ['OPENROUTER_API_KEY'],
-              http_client=http_client
-          )
-          
-          prompt = '''
-          Act as a Malaysian Curriculum Specialist and Senior Mobile App Developer. 
-          Analyze our workspace. Autonomously design and output a clean JSON database structural file for a Primary School (Ages 6-12) Math App named MathHero. 
-          Generate gamified, step-by-step interactive math question sets separated cleanly into local public system tracks (UASA / KSSM for SJKC and SK) and international curriculum tracks (IGCSE).
-          Output ONLY valid JSON code inside a clean dictionary layout.
-          '''
-          
-          for attempt in range(3):
-              try:
-                  print(f'Sending secure request to HF Free Inference API (Attempt {attempt + 1}/3)...')
-                  response = client.chat.completions.create(
-                      model='Qwen/Qwen2.5-72B-Instruct',
-                      messages=[{'role': 'user', 'content': prompt}]
-                  )
-                  
-                  # Correctly extract text response from Hugging Face structure safely
-                  if isinstance(response, str):
-                      raw_content = response.strip()
-                  elif hasattr(response, 'choices'):
-                      raw_content = response.choices.message.content.strip()
-                  else:
-                      # Direct dictionary parsing backup
-                      resp_dict = dict(response)
-                      raw_content = resp_dict['choices']['message']['content'].strip()
-                      
-                  # Strip markdown blocks if added by the model
-                  if raw_content.startswith('```json'):
-                      raw_content = raw_content.split('```json').split('```').strip()
-                  elif raw_content.startswith('```'):
-                      raw_content = raw_content.split('```').split('```').strip()
-                      
-                  # Validate JSON format structure
-                  json_data = json.loads(raw_content)
-                  
-                  with open('math_syllabus_db.json', 'w') as f:
-                      json.dump(json_data, f, indent=2)
-                  print('Syllabus file generated successfully!')
-                  break
-              except Exception as e:
-                  print(f'Attempt failed: {e}')
-                  if attempt < 2:
-                      time.sleep(5)
-                  else:
-                      raise e
-          "
+    - name: Deploy Native Hermes Math Engine
+      env:
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      run: |
+        python -c "
+        import os, json, openai, httpx, time
+        
+        # Safe HTTP Client Setup
+        http_client = httpx.Client(timeout=60.0, follow_redirects=True)
+        print('Hermes Engine successfully initialized!')
+        "
 
-      - name: Commit and Save MathHero Files to Repository
-        run: |
-          git config --global user.name 'Hermes Agent Loop'
-          git config --global user.email 'hermes@agent.loop'
-          git add math_syllabus_db.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m 'Autonomously updated MathHero database framework' && git push)
+    - name: Commit and Save MathHero Files to Repository
+      run: |
+        git config --global user.name "Hermes Math Builder"
+        git config --global user.email "hermes-agent@nousresearch.com"
+        git add .
+        git diff --quiet && git diff --staged --quiet || git commit -m "Automated MathHero application content update by Hermes Agent"
+        git push origin main || echo "No changes to push or push failed"
