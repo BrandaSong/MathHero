@@ -26,15 +26,11 @@ jobs:
           python -c "
           import os, json, openai, httpx, time
           
-          # Force network routing through open public Google DNS paths to bypass datacenter blocks
-          http_client = httpx.Client(
-              timeout=90.0,
-              transport=httpx.HTTPTransport(local_address='0.0.0.0'),
-              follow_redirects=True
-          )
+          # Connect via Hugging Face Serverless Route to bypass GitHub network blocks
+          http_client = httpx.Client(timeout=60.0, follow_redirects=True)
           
           client = openai.OpenAI(
-              base_url='https://openrouter.ai',
+              base_url='https://huggingface.co',
               api_key=os.environ['OPENROUTER_API_KEY'],
               http_client=http_client
           )
@@ -48,19 +44,31 @@ jobs:
           
           for attempt in range(3):
               try:
-                  print(f'Sending secure unblocked request to OpenRouter API (Attempt {attempt + 1}/3)...')
+                  print(f'Sending secure request to HF Free Inference API (Attempt {attempt + 1}/3)...')
                   response = client.chat.completions.create(
-                      model='meta-llama/llama-3-8b-instruct:free',
+                      model='Qwen/Qwen2.5-72B-Instruct',
                       messages=[{'role': 'user', 'content': prompt}]
                   )
                   
-                  raw_content = response.choices.message.content.strip()
-                  if raw_content.startswith('```json'):
-                      raw_content = raw_content.split('```json')[1].split('```')[0].strip()
-                  elif raw_content.startswith('```'):
-                      raw_content = raw_content.split('```')[1].split('```')[0].strip()
+                  # Correctly extract text response from Hugging Face structure safely
+                  if isinstance(response, str):
+                      raw_content = response.strip()
+                  elif hasattr(response, 'choices'):
+                      raw_content = response.choices.message.content.strip()
+                  else:
+                      # Direct dictionary parsing backup
+                      resp_dict = dict(response)
+                      raw_content = resp_dict['choices']['message']['content'].strip()
                       
+                  # Strip markdown blocks if added by the model
+                  if raw_content.startswith('```json'):
+                      raw_content = raw_content.split('```json').split('```').strip()
+                  elif raw_content.startswith('```'):
+                      raw_content = raw_content.split('```').split('```').strip()
+                      
+                  # Validate JSON format structure
                   json_data = json.loads(raw_content)
+                  
                   with open('math_syllabus_db.json', 'w') as f:
                       json.dump(json_data, f, indent=2)
                   print('Syllabus file generated successfully!')
@@ -68,7 +76,7 @@ jobs:
               except Exception as e:
                   print(f'Attempt failed: {e}')
                   if attempt < 2:
-                      time.sleep(15)
+                      time.sleep(5)
                   else:
                       raise e
           "
