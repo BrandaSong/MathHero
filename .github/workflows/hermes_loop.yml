@@ -3,7 +3,7 @@ name: 24/7 Hermes Math App Builder
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *' # Automated execution every 6 hours
+    - cron: '0 */6 * * *'
 
 jobs:
   run-agent:
@@ -27,19 +27,8 @@ jobs:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         python -c "
-        import os, json, openai, httpx, time
+        import os, json, time
         
-        # Setup cross-compatible OpenRouter connection
-        base_url = 'https://openrouter.ai'
-        api_key = os.getenv('OPENROUTER_API_KEY')
-        
-        if not api_key:
-            print('Warning: API Key missing, initializing standard engine simulation...')
-            api_key = 'mock-key'
-            
-        client = openai.OpenAI(base_url=base_url, api_key=api_key)
-        
-        # Structure the automated database update payload
         syllabus_template = {
             'target_demographics': 'Ages 6-12 (Primary Schools)',
             'curriculums': ['SK (UASA)', 'SJKC', 'IGCSE Core Maths'],
