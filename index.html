@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathHero Sandbox Console</title>
+    <script src="https://tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 font-sans antialiased text-slate-800">
+    <nav class="bg-indigo-600 text-white shadow-md px-6 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold tracking-tight">🚀 MathHero Enterprise Sandbox</h1>
+        <span class="bg-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">SSM Review Mode</span>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <header class="text-center mb-12">
+            <h2 class="text-3xl font-extrabold text-slate-900">Custom Curriculum Tester</h2>
+            <p class="mt-2 text-slate-600">Simulate how users options personalize their math journeys dynamically.</p>
+        </header>
+
+        <section class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm mb-8 space-y-6">
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Step 1: Select Student Age / Level</label>
+                <div class="grid grid-cols-4 gap-3">
+                    <button onclick="setAge(7)" id="age-7" class="age-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">Age 7 (Std 1)</button>
+                    <button onclick="setAge(9)" id="age-9" class="age-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">Age 9 (Std 3)</button>
+                    <button onclick="setAge(11)" id="age-11" class="age-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">Age 11 (Std 5)</button>
+                    <button onclick="setAge(12)" id="age-12" class="age-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">Age 12 (Std 6)</button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Step 2: Select School Syllabus</label>
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="setSyllabus('SK_UASA')" id="syl-SK_UASA" class="syl-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">SK (UASA)</button>
+                    <button onclick="setSyllabus('SJKC')" id="syl-SJKC" class="syl-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">SJKC (Chinese)</button>
+                    <button onclick="setSyllabus('IGCSE')" id="syl-IGCSE" class="syl-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">IGCSE Core</button>
+                </div>
+            </div>
+            
+            <button onclick="fetchPersonalizedQuestion()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition">
+                Generate Targeted Module Material
+            </button>
+        </section>
+
+        <section class="bg-slate-900 text-slate-100 rounded-3xl p-8 shadow-inner font-mono text-sm min-h-[200px]" id="display-console">
+            // Selection choices will render live curriculum nodes directly here...
+        </section>
+    </main>
+
+    <script>
+        let selectedAge = null;
+        let selectedSyllabus = null;
+
+        function setAge(age) {
+            selectedAge = age;
+            document.querySelectorAll('.age-btn').forEach(btn => btn.classList.remove('bg-indigo-50', 'border-indigo-600', 'text-indigo-600'));
+            document.getElementById('age-' + age).classList.add('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
+        }
+
+        function setSyllabus(syl) {
+            selectedSyllabus = syl;
+            document.querySelectorAll('.syl-btn').forEach(btn => btn.classList.remove('bg-indigo-50', 'border-indigo-600', 'text-indigo-600'));
+            document.getElementById('syl-' + syl).classList.add('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
+        }
+
+        async function fetchPersonalizedQuestion() {
+            const consoleBox = document.getElementById('display-console');
+            if(!selectedAge || !selectedSyllabus) {
+                consoleBox.innerHTML = `<span class="text-amber-400">⚠️ Error: Please pick BOTH an age group and a school syllabus group above first.</span>`;
+                return;
+            }
+            
+            consoleBox.innerHTML = `Fetching customized math payload for Age ${selectedAge} | System: ${selectedSyllabus}...`;
+            
+            try {
+                const res = await fetch('math_syllabus.json');
+                const data = await res.json();
+                
+                const curriculumGroup = data.segmented_curriculums?.[selectedSyllabus];
+                const ageGroupKey = "Age_" + selectedAge;
+                const modules = curriculumGroup?.[ageGroupKey];
+                
+                if (modules) {
+                    consoleBox.innerHTML = `
+<span class="text-emerald-400">✓ DYNAMIC ROUTING PATH ACTIVATED SUCCESSFULLY</span>
+--------------------------------------------------
+[Syllabus Zone] : ${selectedSyllabus}
+[Target Group]  : Age ${selectedAge}
+[Core Topic]   : ${modules.topic}
+--------------------------------------------------
+[SAMPLE MOCK PROBLEM]:
+👉 "${modules.question}"
+
+[EXAM REQUIREMENT REFERENCE]:
+📌 ${modules.exam_target}
+--------------------------------------------------`;
+                } else {
+                    consoleBox.innerHTML = `<span class="text-amber-400">⚠️ Notice: Content module for this configuration is linking. Try Age 7 or 12 for active sandbox demos.</span>`;
+                }
+            } catch(e) {
+                consoleBox.innerHTML = `<span class="text-rose-400">Database synchronization reading error. Check workspace status.</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
