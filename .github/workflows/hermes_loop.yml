@@ -23,23 +23,46 @@ jobs:
 
     - name: Deploy Native Hermes Math Engine
       env:
-        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         python -c "
         import os, json, time
         
-        syllabus_template = {
-            'target_demographics': 'Ages 6-12 (Primary Schools)',
-            'curriculums': ['SK (UASA)', 'SJKC', 'IGCSE Core Maths'],
-            'last_agent_review': time.strftime('%Y-%m-%d %H:%M:%S'),
-            'status': 'A+ Objective Optimization Active'
+        master_content = {
+            'SK_UASA': {
+                'Age_6': {'topic': 'Nombor 1 hingga 20', 'question': 'Kira objek ini: 🍎🍎🍎 + 🍏🍏. Berapakah jumlah keseluruhan buah-buahan tersebut?', 'exam_target': 'Ujian Diagnostik Awal Tahun'},
+                'Age_7': {'topic': 'Nombor Bulat hingga 100', 'question': 'Ali ada 12 pensel warna. Raju memberi 7 pensel warna lagi kepadanya. Berapakah jumlah pensel warna Ali sekarang?', 'exam_target': 'UASA Bahagian A - Pemahaman Asas'},
+                'Age_8': {'topic': 'Operasi Asas Darab (2, 5, 10)', 'question': 'Terdapat 4 buah basikal. Setiap basikal mempunyai 2 roda. Berapakah jumlah roda keseluruhannya?', 'exam_target': 'UASA Pentaksiran Bilik Darjah (PBD)'},
+                'Age_9': {'topic': 'Pecahan dan Perpuluhan', 'question': 'Siti memotong sebiji kek kepada 4 bahagian yang sama besar. Dia makan 1 bahagian. Apakah pecahan kek yang tinggal?', 'exam_target': 'UASA Bahagian A - Kemahiran Nombor'},
+                'Age_10': {'topic': 'Masa, Jisim & Isi Padu Cecair', 'question': 'Sebuah botol mengandungi 1.5 liter air. Tukarkan isi padu cecair ini kepada mililitir (ml) sepenuhnya.', 'exam_target': 'UASA Bahagian B - Penyelesaian Masalah'},
+                'Age_11': {'topic': 'Pengurusan Data & Purata', 'question': 'Markah ujian bagi tiga orang murid ialah 80, 85, dan 90. Hitungkan min (purata) markah mereka.', 'exam_target': 'UASA Kemahiran Berfikir Aras Tinggi (KBAT)'},
+                'Age_12': {'topic': 'Peratus & Pengurusan Kewangan', 'question': 'Harga sebuah kalkulator ialah RM 80. Semasa jualan Hari Raya, diskaun sebanyak 15% diberikan. Hitung harga jualan akhir.', 'exam_target': 'UASA Bahagian B - Aplikasi Komprehensif'}
+            },
+            'SJKC_UASA': {
+                'Age_6': {'topic': '20以内的数与基本计数', 'question': '树上有 8 只小鸟，飞走了 3 只。树上还剩几只小鸟？', 'exam_target': '一年级入学前诊断评估'},
+                'Age_7': {'topic': '100以内的加减法应用', 'question': '美美有 25 个红气球，蓝气球比红气球少 9 个。美美一共有多少个气球？', 'exam_target': 'UASA 甲组 - 基本概念应用'},
+                'Age_8': {'topic': '乘法与除法概念应用', 'question': '老师把 24 支铅笔平均分给 6 个同学。每个同学可以得到多少支铅笔？', 'exam_target': 'UASA 课堂评估 (PBD) 标准'},
+                'Age_9': {'topic': '分数的初步认识与大小比较', 'question': '一个西瓜平均切成 8 块，小明吃了 3 块，小红吃了 2 块。他们一共吃了这个西瓜的几分之几？', 'exam_target': 'UASA 甲组 - 算术与分数高阶题'},
+                'Age_10': {'topic': '图形的周长与面积计算', 'question': '一个长方形的长是 12 厘米，宽是 5 厘米。计算这个长方形的面积（平方厘米）。', 'exam_target': 'UASA 乙组 - 空间与几何解决问题'},
+                'Age_11': {'topic': '小数混合运算与应用', 'question': '一箱苹果重 15.6 公斤。卖出 4.25 公斤后，又补进 6.8 公斤。现在箱子里有多少公斤苹果？', 'exam_target': 'UASA 高阶思维技能 (KBAT) 模拟题'},
+                'Age_12': {'topic': '比与比例及统计图表', 'question': '在一个盒子里，红球与蓝球的比是 3:5。如果蓝球有 40 个，盒子里一共有多少个球？', 'exam_target': 'UASA 乙组 - 综合应用与统考备考'}
+            },
+            'IGCSE_Core': {
+                'Age_6': {'topic': 'Shapes, Patterns & Sorting', 'question': 'Identify the next geometric shape in the visual sequencing grid: 🔺, 🔵, 🔺, 🔵, [ ? ].', 'exam_target': 'Cambridge Primary Stage 1 Progression'},
+                'Age_7': {'topic': 'Basic Sequences and Number Patterns', 'question': 'Complete the missing term in the operational sequencing grid: 5, 10, 15, [ ? ], 25.', 'exam_target': 'Cambridge Primary Progression Stage 2 Assessment'},
+                'Age_8': {'topic': 'Place Value & Estimation', 'question': 'In the base-10 number 738, what is the specific place value of the digit 3?', 'exam_target': 'Cambridge Primary Core Stage 3 Standard'},
+                'Age_9': {'topic': 'Mental Math Strategies & Word Problems', 'question': 'John travels 45 kilometers in the morning and 38 kilometers in the afternoon. What is his total distance?', 'exam_target': 'Cambridge Stage 4 Progress Test Level'},
+                'Age_10': {'topic': 'Negative Numbers & Coordinate Grids', 'question': 'The temperature in London is 3°C. It drops by 7°C overnight. What is the new temperature?', 'exam_target': 'Cambridge Stage 5 Analytical Logic Block'},
+                'Age_11': {'topic': 'Introductory Decimals, Fractions & Percentages', 'question': 'Convert the fraction 3/5 into both a decimal format and a percentage value.', 'exam_target': 'Cambridge Primary Checkpoint Stage 6 Diagnostic'},
+                'Age_12': {'topic': 'Foundational Algebraic Expressions', 'question': 'Simplify the following equation completely: 4x + 7y - 2x + 3y.', 'exam_target': 'Cambridge Lower Secondary Checkpoint Exam Standard'}
+            }
         }
         
+        app_json = {'metadata': {'branding': 'MathHero Digital Enterprise', 'last_build': time.strftime('%Y-%m-%d')}, 'segmented_curriculums': master_content}
         with open('math_syllabus.json', 'w') as f:
-            json.dump(syllabus_template, f, indent=2)
+            json.dump(app_json, f, indent=2)
             
-        print('Hermes Engine verified and math_syllabus.json updated!')
+        print('Age-segmented multi-language database successfully compiled!')
         "
 
     - name: Commit and Save MathHero Files to Repository
@@ -47,5 +70,5 @@ jobs:
         git config --global user.name "Hermes Math Builder"
         git config --global user.email "hermes-agent@nousresearch.com"
         git add .
-        git diff --quiet && git diff --staged --quiet || git commit -m "Automated MathHero primary curriculum sync by Hermes Agent"
-        git push origin main || echo "No pipeline sync updates needed at this interval"
+        git diff --quiet && git diff --staged --quiet || git commit -m "Configure full age 6-12 localized language database matrices"
+        git push origin main || echo "Sync stable"
