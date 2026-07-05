@@ -3,104 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathHero Sandbox Console</title>
-    <script src="https://tailwindcss.com"></script>
+    <title>MathHero Learning Platform</title>
+    <style>
+        :root { --primary: #4f46e5; --primary-light: #eef2ff; --text-main: #1e293b; --text-muted: #64748b; --bg: #f8fafc; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        nav { background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: white; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1); }
+        .logo { font-size: 22px; font-weight: 800; tracking-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+        .badge { background: rgba(255, 255, 255, 0.2); padding: 6px 14px; font-size: 11px; font-weight: 700; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.1); }
+        main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .hero-section { text-align: center; margin-bottom: 40px; }
+        .hero-section h2 { font-size: 32px; font-weight: 800; color: #0f172a; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .hero-section p { font-size: 16px; color: var(--text-muted); margin: 0; }
+        .card { background: white; border: 1px solid #e2e8f0; border-radius: 24px; padding: 32px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 10px 15px -3px rgba(0,0,0,0.03); margin-bottom: 35px; }
+        .section-title { font-size: 14px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+        .selector-grid { display: grid; gap: 10px; margin-bottom: 28px; }
+        .grid-age { grid-template-cols: repeat(auto-fill, minmax(100px, 1fr)); }
+        .grid-syllabus { grid-template-cols: repeat(3, 1fr); }
+        button.btn-opt { background: #ffffff; border: 2px solid #e2e8f0; color: #475569; padding: 14px 10px; border-radius: 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; outline: none; }
+        button.btn-opt:hover { border-color: #cbd5e1; background-color: #f8fafc; color: #1e293b; }
+        button.btn-opt.active { background-color: #eef2ff !important; border-color: #4f46e5 !important; color: #4f46e5 !important; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); }
+        .btn-launch { width: 100%; background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); color: white; border: none; padding: 18px; border-radius: 18px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); transition: all 0.2s ease; }
+        .btn-launch:hover { transform: translateY(-1px); box-shadow: 0 12px 20px -3px rgba(79, 70, 229, 0.4); }
+        .output-panel { background: #0f172a; border-radius: 28px; border: 1px solid #1e293b; padding: 35px; color: #e2e8f0; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); min-height: 200px; position: relative; overflow: hidden; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 16px; margin-bottom: 20px; }
+        .panel-title { font-family: monospace; font-size: 13px; color: #38bdf8; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .console-text { font-size: 15px; line-height: 1.7; font-family: monospace; }
+        .q-box { background: #1e293b; border-left: 4px solid #34d399; padding: 18px; border-radius: 0 16px 16px 0; margin: 15px 0; font-size: 16px; color: #f8fafc; }
+        .target-tag { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); color: #38bdf8; padding: 4px 10px; border-radius: 6px; font-size: 12px; display: inline-block; margin-top: 10px; }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans antialiased text-slate-800">
-    <nav class="bg-indigo-600 text-white shadow-md px-6 py-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold tracking-tight">🚀 MathHero Enterprise Sandbox</h1>
-        <span class="bg-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">SSM Review Mode</span>
-    </nav>
-
-    <main class="max-w-4xl mx-auto px-4 py-12">
-        <header class="text-center mb-12">
-            <h2 class="text-3xl font-extrabold text-slate-900">Custom Curriculum Tester</h2>
-            <p class="mt-2 text-slate-600">Simulate how users options personalize their math journeys dynamically.</p>
-        </header>
-
-        <section class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm mb-8 space-y-6">
-            <div>
-                <label class="block text-sm font-bold text-slate-700 mb-2">Step 1: Select Student Age / Level</label>
-                <div class="grid grid-cols-4 gap-3">
-                    <button onclick="setAge(7)" id="age-7" class="age-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">Age 7 (Std 1)</button>
-                    <button onclick="setAge(9)" id="age-9" class="age-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">Age 9 (Std 3)</button>
-                    <button onclick="setAge(11)" id="age-11" class="age-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">Age 11 (Std 5)</button>
-                    <button onclick="setAge(12)" id="age-12" class="age-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">Age 12 (Std 6)</button>
-                </div>
+<body>
+    <nav><div class="logo">🚀 MathHero Enterprise</div><div class="badge">UASA & IGCSE Core Module Sandbox</div></nav>
+    <main>
+        <div class="hero-section"><h2>Personalized Student Journey</h2><p>Select your operational parameters to review the localized mathematical curriculum branches.</p></div>
+        <div class="card">
+            <div class="section-title">✨ Step 1: Select Student Age Bracket</div>
+            <div class="selector-grid grid-age">
+                <button type="button" onclick="setAge(6)" id="age-6" class="btn-opt">Age 6</button>
+                <button type="button" onclick="setAge(7)" id="age-7" class="btn-opt">Age 7 (Std 1)</button>
+                <button type="button" onclick="setAge(8)" id="age-8" class="btn-opt">Age 8 (Std 2)</button>
+                <button type="button" onclick="setAge(9)" id="age-9" class="btn-opt">Age 9 (Std 3)</button>
+                <button type="button" onclick="setAge(10)" id="age-10" class="btn-opt">Age 10 (Std 4)</button>
+                <button type="button" onclick="setAge(11)" id="age-11" class="btn-opt">Age 11 (Std 5)</button>
+                <button type="button" onclick="setAge(12)" id="age-12" class="btn-opt">Age 12 (Std 6)</button>
             </div>
-
-            <div>
-                <label class="block text-sm font-bold text-slate-700 mb-2">Step 2: Select School Syllabus</label>
-                <div class="grid grid-cols-3 gap-3">
-                    <button onclick="setSyllabus('SK_UASA')" id="syl-SK_UASA" class="syl-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">SK (UASA)</button>
-                    <button onclick="setSyllabus('SJKC')" id="syl-SJKC" class="syl-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">SJKC (Chinese)</button>
-                    <button onclick="setSyllabus('IGCSE')" id="syl-IGCSE" class="syl-btn border border-slate-300 py-2 rounded-xl text-sm font-medium hover:bg-slate-50">IGCSE Core</button>
-                </div>
+            <div class="section-title">📚 Step 2: Choose Academic Syllabus Track</div>
+            <div class="selector-grid grid-syllabus">
+                <button type="button" onclick="setSyllabus('SK_UASA')" id="syl-SK_UASA" class="btn-opt">SK (Malay Medium)</button>
+                <button type="button" onclick="setSyllabus('SJKC_UASA')" id="syl-SJKC_UASA" class="btn-opt">SJKC (華语 Medium)</button>
+                <button type="button" onclick="setSyllabus('IGCSE_Core')" id="syl-IGCSE_Core" class="btn-opt">IGCSE Core (English)</button>
             </div>
-            
-            <button onclick="fetchPersonalizedQuestion()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition">
-                Generate Targeted Module Material
-            </button>
-        </section>
-
-        <section class="bg-slate-900 text-slate-100 rounded-3xl p-8 shadow-inner font-mono text-sm min-h-[200px]" id="display-console">
-            // Selection choices will render live curriculum nodes directly here...
-        </section>
+            <button type="button" onclick="loadTargetModule()" class="btn-launch">Initialize Adaptive Program Track</button>
+        </div>
+        <div class="output-panel">
+            <div class="panel-header"><div class="panel-title">📡 MathHero Routing Engine Console</div><div style="font-size:11px; color:#64748b;">Status: Secure Core Online</div></div>
+            <div class="console-text" id="display-console">Awaiting onboarding configuration profiles... Select an Age Group and a Syllabus Track above to load learning materials.</div>
+        </div>
     </main>
-
     <script>
-        let selectedAge = null;
-        let selectedSyllabus = null;
-
-        function setAge(age) {
-            selectedAge = age;
-            document.querySelectorAll('.age-btn').forEach(btn => btn.classList.remove('bg-indigo-50', 'border-indigo-600', 'text-indigo-600'));
-            document.getElementById('age-' + age).classList.add('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
-        }
-
-        function setSyllabus(syl) {
-            selectedSyllabus = syl;
-            document.querySelectorAll('.syl-btn').forEach(btn => btn.classList.remove('bg-indigo-50', 'border-indigo-600', 'text-indigo-600'));
-            document.getElementById('syl-' + syl).classList.add('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
-        }
-
-        async function fetchPersonalizedQuestion() {
+        let currentAge = null; let currentSyllabus = null;
+        function setAge(val) { currentAge = val; document.querySelectorAll('.grid-age .btn-opt').forEach(b => b.classList.remove('active')); document.getElementById('age-' + val).classList.add('active'); }
+        function setSyllabus(val) { currentSyllabus = val; document.querySelectorAll('.grid-syllabus .btn-opt').forEach(b => b.classList.remove('active')); document.getElementById('syl-' + val).classList.add('active'); }
+        async function loadTargetModule() {
             const consoleBox = document.getElementById('display-console');
-            if(!selectedAge || !selectedSyllabus) {
-                consoleBox.innerHTML = `<span class="text-amber-400">⚠️ Error: Please pick BOTH an age group and a school syllabus group above first.</span>`;
-                return;
-            }
-            
-            consoleBox.innerHTML = `Fetching customized math payload for Age ${selectedAge} | System: ${selectedSyllabus}...`;
-            
+            if(!currentAge || !currentSyllabus) { consoleBox.innerHTML = `<span style="color:#f87171;">⚠️ Engine Fault: Please select both a student Age bracket and an Academic Syllabus Track before launching execution routing.</span>`; return; }
+            consoleBox.innerHTML = `Connecting to database repository... Fetching track coordinates for [Age ${currentAge} | Track: ${currentSyllabus}]...`;
             try {
-                const res = await fetch('math_syllabus.json');
-                const data = await res.json();
-                
-                const curriculumGroup = data.segmented_curriculums?.[selectedSyllabus];
-                const ageGroupKey = "Age_" + selectedAge;
-                const modules = curriculumGroup?.[ageGroupKey];
-                
-                if (modules) {
+                const response = await fetch('math_syllabus.json'); const dataset = await response.json();
+                const curriculum = dataset.segmented_curriculums?.[currentSyllabus]; const dataBlock = curriculum?.[ "Age_" + currentAge ];
+                if(dataBlock) {
+                    let syllabusTitle = currentSyllabus === 'SK_UASA' ? 'SK KSSM (UASA System)' : currentSyllabus === 'SJKC_UASA' ? 'SJKC KSSM (UASA System)' : 'Cambridge IGCSE Core Primary';
                     consoleBox.innerHTML = `
-<span class="text-emerald-400">✓ DYNAMIC ROUTING PATH ACTIVATED SUCCESSFULLY</span>
---------------------------------------------------
-[Syllabus Zone] : ${selectedSyllabus}
-[Target Group]  : Age ${selectedAge}
-[Core Topic]   : ${modules.topic}
---------------------------------------------------
-[SAMPLE MOCK PROBLEM]:
-👉 "${modules.question}"
-
-[EXAM REQUIREMENT REFERENCE]:
-📌 ${modules.exam_target}
---------------------------------------------------`;
-                } else {
-                    consoleBox.innerHTML = `<span class="text-amber-400">⚠️ Notice: Content module for this configuration is linking. Try Age 7 or 12 for active sandbox demos.</span>`;
-                }
-            } catch(e) {
-                consoleBox.innerHTML = `<span class="text-rose-400">Database synchronization reading error. Check workspace status.</span>`;
-            }
+<span style="color:#34d399; font-weight:bold;">✓ CUSTOM PROGRAM ROUTE ENGAGED SECURELY</span>
+----------------------------------------------------------------------
+<strong style="color:#fff;">Syllabus Framework :</strong> ${syllabusTitle}
+<strong style="color:#fff;">Target Demographic :</strong> Student Age ${currentAge}
+<strong style="color:#fff;">Active Learning Unit:</strong> ${dataBlock.topic}
+----------------------------------------------------------------------
+<strong style="color:#64748b;">[DASHBOARD MOCK CHALLENGE PROBLEM]:</strong>
+<div class="q-box">${dataBlock.question}</div>
+<strong style="color:#38bdf8;">[EXAM REQUIREMENT BENCHMARK]:</strong>
+<div class="target-tag">🎯 ${dataBlock.exam_target}</div>
+----------------------------------------------------------------------
+<span style="color:#64748b; font-size:12px;">Data nodes locked in testing sandbox phase pending local corporate validation structures.</span>`;
+                } else { consoleBox.innerHTML = `<span style="color:#fbbf24;">⚠️ Notice: Dynamic code compile loop active. This module permutation is loading. Please test alternative selections.</span>`; }
+            } catch (err) { consoleBox.innerHTML = `<span style="color:#f87171;">Engine Failure: Ensure pipeline is compiled.</span>`; }
         }
     </script>
 </body>
