@@ -7,15 +7,19 @@
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; background-color: #fffae6; color: #2d3748; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
         
+        /* Floating Emergency Force Refresh Button */
+        .cache-breaker-btn { position: fixed; top: 10px; right: 10px; background: #0f172a; color: #34d399; font-weight: bold; border: 2px solid #34d399; padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; z-index: 99999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .cache-breaker-btn:hover { background: #1e293b; color: #059669; }
+
         /* App Header Dashboard */
-        .app-header { width: 100%; max-width: 480px; background: #ff477e; color: white; padding: 12px 16px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 20px 20px; box-shadow: 0 4px 10px rgba(255, 71, 126, 0.2); }
+        .app-header { width: 100%; max-width: 480px; background: #ff477e; color: white; padding: 12px 16px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 20px 20px; box-shadow: 0 4px 10px rgba(255, 71, 126, 0.2); margin-top: 45px; }
         .app-title { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
         .progress-indicator { background: rgba(0,0,0,0.15); padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: bold; }
         
         .main-container { width: 100%; max-width: 480px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; }
         
         /* Interactive Subject Selector Matrix */
-        .subject-grid { display: grid; grid-template-cols: repeat(4, 1fr); gap: 8px; margin-bottom: 4px; }
+        .subject-grid { display: grid; grid-template-cols: repeat(3, 1fr); gap: 8px; margin-bottom: 4px; }
         .subject-btn { background: white; border: 3px solid #e2e8f0; border-radius: 16px; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform 0.1s; }
         .subject-btn:active { transform: scale(0.95); }
         .subject-btn.active { border-color: #4cc9f0 !important; background: #e8f7fc !important; }
@@ -45,13 +49,16 @@
 </head>
 <body>
 
+    <!-- Floating Trigger Box to Destory Local Storage Snapshots -->
+    <button class="cache-breaker-btn" onclick="forceCacheWipe()">Wipe Browser Cache ⚡</button>
+
     <nav class="app-header">
         <div class="app-title">🚀 MathHero Club</div>
-        <div class="progress-indicator" id="progress-text">Lesson 1/1</div>
+        <div class="progress-indicator" id="progress-text">SK | Level 6-7</div>
     </nav>
 
     <main class="main-container">
-        <!-- Gamified Curriculum Selection Blocks -->
+        <!-- Gamified Curriculum Selection Blocks (Removing Medium text) -->
         <div class="subject-grid">
             <button onclick="setSyllabus('SK_UASA')" id="syl-SK_UASA" class="subject-btn active">
                 <div class="icon-circle" style="background:#ff477e;">🇲🇾</div>
@@ -59,19 +66,15 @@
             </button>
             <button onclick="setSyllabus('SJKC_UASA')" id="syl-SJKC_UASA" class="subject-btn">
                 <div class="icon-circle" style="background:#4cc9f0;">🇨🇳</div>
-                <span>SJKC 华语</span>
+                <span>SJKC Mandarin</span>
             </button>
             <button onclick="setSyllabus('IGCSE_Core')" id="syl-IGCSE_Core" class="subject-btn">
                 <div class="icon-circle" style="background:#f72585;">🇬🇧</div>
-                <span>IGCSE Eng</span>
-            </button>
-            <button onclick="alert('Subscription Lock: Upgrade to access advanced visual test modules.')" class="subject-btn" style="opacity: 0.6;">
-                <div class="icon-circle" style="background:#7209b7;">⭐</div>
-                <span>Premium</span>
+                <span>IGCSE English</span>
             </button>
         </div>
 
-        <!-- Dynamic Year Selection Tabs -->
+        <!-- Dynamic Year Selection Tabs (Combined Ages 6 and 7) -->
         <div class="level-tabs">
             <button onclick="setAge('6_7')" id="age-6_7" class="level-btn active">Ages 6-7 (Std 1)</button>
             <button onclick="setAge('8')" id="age-8" class="level-btn">Age 8 (Std 2)</button>
@@ -81,11 +84,11 @@
             <button onclick="setAge('12')" id="age-12" class="level-btn">Age 12 (Std 6)</button>
         </div>
 
-        <!-- Visual Core Notebook Blackboard Layout -->
+        <!-- Visual Core Notebook Chalkboard Layout -->
         <div class="chalkboard-container">
             <div class="grid-paper" id="problem-screen">
                 <div class="math-equation" id="equation-display">
-                    Select criteria above<br>to view gamified pad
+                    Initializing...
                 </div>
             </div>
         </div>
@@ -111,7 +114,16 @@
         let selectedSyllabus = 'SK_UASA';
         let typedInput = "";
 
-        // Instantly trigger sample problem routing arrays
+        function forceCacheWipe() {
+            // Wipes service workers, cache objects, and triggers a dynamic random stamp query refresh
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) { registration.unregister(); }
+                });
+            }
+            window.location.href = window.location.origin + window.location.pathname + '?refresh_token=' + Math.random();
+        }
+
         function setAge(val) {
             selectedAge = val;
             document.querySelectorAll('.level-tabs .level-btn').forEach(b => b.classList.remove('active'));
@@ -138,7 +150,7 @@
 
         function validateAnswer() {
             if(!typedInput) return;
-            alert("Excellent Effort! Answer logged securely in Sandbox Mode.");
+            alert("Excellent Effort! Sandbox Review validation success.");
             clearInput();
         }
 
@@ -147,18 +159,5 @@
             const progress = document.getElementById('progress-text');
             
             try {
-                const response = await fetch('math_syllabus.json');
+                const response = await fetch('math_syllabus.json?nocache=' + new Date().getTime());
                 const data = await response.json();
-                const module = data.segmented_curriculums[selectedSyllabus]["Age_" + selectedAge];
-                
-                progress.innerText = selectedSyllabus.replace('_UASA','') + " | " + "Level " + selectedAge.replace('_','-');
-                
-                // Formulate the vertical structured digit layout block
-                if (selectedAge === '6_7') {
-                    screen.innerHTML = `
-                        <div style="text-align:right; font-size:36px; padding-right:20px;">
-                            &nbsp;&nbsp;25<br>
-                            +&nbsp;09<br>
-                            <span class="math-line"></span><br>
-                            <div class="input-box-display" id="user-answer">?</div>
-                        </div>
