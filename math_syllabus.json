@@ -1,19 +1,14 @@
 {
   "metadata": {
     "branding": "MathHero Digital Enterprise",
-    "last_build": "2026-07-05"
+    "last_build": "2026-07-06"
   },
   "segmented_curriculums": {
     "SK_UASA": {
-      "Age_6": {
-        "topic": "Nombor 1 hingga 20",
-        "question": "Kira objek ini: \ud83c\udf4e\ud83c\udf4e\ud83c\udf4e + \ud83c\udf4f\ud83c\udf4f. Berapakah jumlah keseluruhan buah-buahan tersebut?",
-        "exam_target": "Ujian Diagnostik Awal Tahun"
-      },
-      "Age_7": {
+      "Age_6_7": {
         "topic": "Nombor Bulat hingga 100",
         "question": "Ali ada 12 pensel warna. Raju memberi 7 pensel warna lagi kepadanya. Berapakah jumlah pensel warna Ali sekarang?",
-        "exam_target": "UASA Bahagian A - Pemahaman Asas"
+        "exam_target": "Standard Baru 2027: UASA Bahagian A - Pemahaman Asas"
       },
       "Age_8": {
         "topic": "Operasi Asas Darab (2, 5, 10)",
@@ -42,15 +37,10 @@
       }
     },
     "SJKC_UASA": {
-      "Age_6": {
-        "topic": "20\u4ee5\u5185\u7684\u6570\u4e0e\u57fa\u672c\u8ba1\u6570",
-        "question": "\u6811\u4e0a\u6709 8 \u53ea\u5c0f\u9e1f\uff0c\u98de\u8d70\u4e86 3 \u53ea\u3002\u6811\u4e0a\u8fd8\u5269\u51e0\u53ea\u5c0f\u9e1f\uff1f",
-        "exam_target": "\u4e00\u5e74\u7ea7\u5165\u5b66\u524d\u8bca\u65ad\u8bc4\u4f30"
-      },
-      "Age_7": {
+      "Age_6_7": {
         "topic": "100\u4ee5\u5185\u7684\u52a0\u51cf\u6cd5\u5e94\u7528",
         "question": "\u7f8e\u7f8e\u6709 25 \u4e2a\u7ea2\u6c14\u7403\uff0c\u84dd\u6c14\u7403\u6bd4\u7ea2\u6c14\u7403\u5c11 9 \u4e2a\u3002\u7f8e\u7f8e\u4e00\u5171\u6709\u591a\u5c11\u4e2a\u6c14\u7403\uff1f",
-        "exam_target": "UASA \u7532\u7ec4 - \u57fa\u672c\u6982\u5ff5\u5e94\u7528"
+        "exam_target": "2027\u65b0\u653f\u7b56\u6807\u51c6\uff1aUASA \u7532\u7ec4 - \u57fa\u672c\u6982\u5ff5\u5e94\u7528"
       },
       "Age_8": {
         "topic": "\u4e58\u6cd5\u4e0e\u9664\u6cd5\u6982\u5ff5\u5e94\u7528",
@@ -78,41 +68,36 @@
         "exam_target": "UASA \u4e59\u7ec4 - \u7efc\u5408\u5e94\u7528\u4e0e\u7edf\u8003\u5907\u8003"
       }
     },
-    "IGCSE_Core": {
-      "Age_6": {
-        "topic": "Shapes, Patterns & Sorting",
-        "question": "Identify the next geometric shape in the visual sequencing grid: \ud83d\udd3a, \ud83d\udd35, \ud83d\udd3a, \ud83d\udd35, [ ? ].",
-        "exam_target": "Cambridge Primary Stage 1 Progression"
+    "BRITISH_CORE": {
+      "Age_5_6": {
+        "topic": "Number Bonds & Basic Addition",
+        "question": "There are 5 red apples and 4 green apples in a basket. How many fruits are there altogether?",
+        "exam_target": "British Curriculum Year 1 Foundation Assessment"
       },
       "Age_7": {
-        "topic": "Basic Sequences and Number Patterns",
-        "question": "Complete the missing term in the operational sequencing grid: 5, 10, 15, [ ? ], 25.",
-        "exam_target": "Cambridge Primary Progression Stage 2 Assessment"
+        "topic": "Simple Sequences & Patterns",
+        "question": "Complete the missing term in the sequence: 5, 10, 15, [ ? ], 25.",
+        "exam_target": "Cambridge Primary Progression Stage 2"
       },
       "Age_8": {
-        "topic": "Place Value & Estimation",
-        "question": "In the base-10 number 738, what is the specific place value of the digit 3?",
-        "exam_target": "Cambridge Primary Core Stage 3 Standard"
+        "topic": "Place Value & 2D Shapes",
+        "question": "In the base-10 number 482, what is the exact value of the digit 8?",
+        "exam_target": "Edexcel Primary Core Year 3 Target"
       },
       "Age_9": {
-        "topic": "Mental Math Strategies & Word Problems",
-        "question": "John travels 45 kilometers in the morning and 38 kilometers in the afternoon. What is his total distance?",
-        "exam_target": "Cambridge Stage 4 Progress Test Level"
+        "topic": "Fractions & Mental Math Calculations",
+        "question": "John eats 2/6 of a pizza. What fraction of the pizza is remaining?",
+        "exam_target": "Cambridge Primary Progression Stage 4 Test"
       },
       "Age_10": {
-        "topic": "Negative Numbers & Coordinate Grids",
-        "question": "The temperature in London is 3\u00b0C. It drops by 7\u00b0C overnight. What is the new temperature?",
-        "exam_target": "Cambridge Stage 5 Analytical Logic Block"
+        "topic": "Decimals & Measurement Conversions",
+        "question": "A water container holds 2.5 liters of liquid. Convert this capacity into milliliters (ml).",
+        "exam_target": "British Curriculum Key Stage 2 Year 5 Standard"
       },
       "Age_11": {
-        "topic": "Introductory Decimals, Fractions & Percentages",
-        "question": "Convert the fraction 3/5 into both a decimal format and a percentage value.",
-        "exam_target": "Cambridge Primary Checkpoint Stage 6 Diagnostic"
-      },
-      "Age_12": {
         "topic": "Foundational Algebraic Expressions",
-        "question": "Simplify the following equation completely: 4x + 7y - 2x + 3y.",
-        "exam_target": "Cambridge Lower Secondary Checkpoint Exam Standard"
+        "question": "Simplify the following expression completely: 5x + 3y - 2x + 4y.",
+        "exam_target": "Cambridge Primary Checkpoint Year 6 Diagnostic"
       }
     }
   }
