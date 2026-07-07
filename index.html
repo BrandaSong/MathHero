@@ -34,7 +34,7 @@
 
     <nav class="app-header">
         <div class="app-title">🚀 MathHero Club</div>
-        <div class="progress-indicator" id="progress-text">SK | Level 6-7</div>
+        <div class="progress-indicator" id="progress-text">SK | Level 1</div>
     </nav>
 
     <main class="main-container">
@@ -54,7 +54,7 @@
         </div>
 
         <div class="level-tabs" id="age-tabs-container">
-            <!-- Dynamic Buttons Generated Natively Below -->
+            <!-- Programmatically rendered tabs -->
         </div>
 
         <div class="chalkboard-container">
@@ -113,13 +113,21 @@
         }
 
         function setAge(val) { selectedAge = val; renderAgeTabs(); syncEngine(); }
-        function setSyllabus(val) { selectedSyllabus = val; document.querySelectorAll('.subject-grid .subject-btn').forEach(b => b.classList.remove('active')); document.getElementById('syl-' + val).classList.add('active'); renderAgeTabs(); syncEngine(); }
+        
+        function setSyllabus(val) { 
+            selectedSyllabus = val; 
+            document.querySelectorAll('.subject-grid .subject-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('syl-' + val).classList.add('active'); 
+            renderAgeTabs(); 
+            syncEngine(); 
+        }
+        
         function pressNum(num) { typedInput += num; document.getElementById('user-answer').innerText = typedInput; }
         function clearInput() { typedInput = ""; document.getElementById('user-answer').innerText = "?"; }
         function validateAnswer() { if(!typedInput) return; alert("Evaluation Verified!"); clearInput(); }
 
         async function syncEngine() {
-            const screen = document.getElementById('equation-display');
+            const screen = document.getElementById('problem-screen');
             const progress = document.getElementById('progress-text');
             try {
                 const response = await fetch('math_syllabus.json?nc=' + new Date().getTime());
@@ -127,4 +135,3 @@
                 const module = data.segmented_curriculums[selectedSyllabus]["Age_" + selectedAge];
                 
                 let title = selectedSyllabus === 'BRITISH_CORE' ? 'Cambridge/Edexcel' : 'UASA';
-                let levelLabel = selectedSyllabus === 'BRITISH_CORE' ? 'Year' : 'Std';
