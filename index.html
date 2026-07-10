@@ -2,283 +2,152 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MathHero Kids Learning Game</title>
+    <title>MathHero Learning Portal</title>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #fffae6; color: #2d3748; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .cache-breaker-btn { position: fixed; top: 10px; right: 10px; background: #0f172a; color: #34d399; font-weight: bold; border: 2px solid #34d399; padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; z-index: 99999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: #fffae6; color: #2d3748; margin: 0; padding: 20px 10px; display: flex; flex-direction: column; align-items: center; }
+        .app-card { width: 100%; max-width: 460px; background: white; border: 4px solid #4f46e5; border-radius: 24px; padding: 20px; box-sizing: border-box; box-shadow: 0 8px 16px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        .app-title { background: #ff477e; color: white; margin: -20px -20px 20px -20px; padding: 15px; text-align: center; font-size: 22px; font-weight: 900; border-radius: 20px 20px 0 0; }
+        .section-label { font-size: 13px; font-weight: 800; color: #4f46e5; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 0.5px; }
         
-        .app-header { width: 100%; max-width: 480px; background: #ff477e; color: white; padding: 12px 16px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 20px 20px; box-shadow: 0 4px 10px rgba(255, 71, 126, 0.2); margin-top: 45px; }
-        .app-title { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
-        .progress-indicator { background: rgba(0,0,0,0.15); padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: bold; }
+        /* Fixed Flat Block Selectors */
+        .block-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .track-row { display: grid; grid-template-cols: repeat(3, 1fr); gap: 6px; margin-bottom: 20px; }
         
-        .main-container { width: 100%; max-width: 480px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; }
-        .subject-grid { display: grid; grid-template-cols: repeat(3, 1fr); gap: 8px; margin-bottom: 4px; }
-        .subject-btn { background: white; border: 3px solid #e2e8f0; border-radius: 16px; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform 0.1s; }
-        .subject-btn.active { border-color: #4cc9f0 !important; background: #e8f7fc !important; }
-        .icon-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; font-weight: bold; }
+        button.choice-btn { background: #ffffff; border: 2px solid #e2e8f0; padding: 12px 8px; border-radius: 14px; font-size: 13px; font-weight: 700; color: #475569; cursor: pointer; text-align: center; }
+        button.choice-btn.active { background: #e0f2fe !important; border-color: #0284c7 !important; color: #0369a1 !important; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); }
         
-        /* Level Matrix Selection Tabs */
-        .level-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; min-height: 45px; width: 100%; }
-        .level-btn { background: #fff; border: 2px solid #cbd5e1; padding: 8px 14px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-        .level-btn.active { background: #4cc9f0; color: white; border-color: #4cc9f0; }
+        /* Permanent Visual Dashboard Container Panels */
+        .age-panel-group { border: 1px solid #e2e8f0; padding: 12px; border-radius: 16px; background: #f8fafc; margin-bottom: 10px; }
+        .age-buttons-row { display: grid; grid-template-cols: repeat(3, 1fr); gap: 6px; }
 
-        .chalkboard-container { background: #ffffff; border: 4px solid #4f46e5; border-radius: 24px; padding: 24px; box-shadow: 0 8px 16px rgba(79, 70, 229, 0.1); min-height: 220px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
-        .grid-paper { width: 100%; background-size: 24px 24px; background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px); display: flex; flex-direction: column; align-items: center; padding: 12px 0; }
-        .math-line { border-top: 5px solid #1e293b; margin-top: 4px; width: 120px; display: inline-block; }
-        .input-box-display { color: #ff477e; font-weight: 900; background: #fff5f7; border: 3px dashed #ff477e; padding: 2px 12px; border-radius: 10px; min-width: 60px; display: inline-block; text-align: center; }
-        
-        .numpad-container { display: grid; grid-template-cols: repeat(3, 1fr); gap: 10px; margin-top: 8px; width: 100%; max-width: 480px; padding: 0 16px; box-sizing: border-box; }
-        .num-key { background: white; border: none; border-bottom: 5px solid #cbd5e1; border-radius: 16px; padding: 16px; font-size: 22px; font-weight: 900; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .num-key.action-clear { background: #ff477e; border-color: #e03162; color: white; }
-        .num-key.action-check { background: #34d399; border-color: #059669; color: white; grid-column: span 2; }
+        .chalkboard { background: #0f172a; color: #f8fafc; border-radius: 20px; padding: 20px; font-family: monospace; font-size: 14px; min-height: 140px; margin-bottom: 15px; line-height: 1.6; white-space: pre-wrap; }
+        .numpad { display: grid; grid-template-cols: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 460px; }
+        .key { background: white; border: 2px solid #cbd5e1; border-bottom-width: 5px; padding: 14px; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; text-align: center; }
+        .key:active { border-bottom-width: 2px; transform: translateY(3px); }
     </style>
 </head>
 <body>
 
-    <button class="cache-breaker-btn" onclick="forceCacheWipe()">Wipe Browser Cache ⚡</button>
-
-    <nav class="app-header">
-        <div class="app-title">🚀 MathHero Club</div>
-        <div class="progress-indicator" id="progress-text">SK | Level 1</div>
-    </nav>
-
-    <main class="main-container">
-        <!-- Syllabus Tracks Selection Grid -->
-        <div class="subject-grid">
-            <button onclick="setSyllabus('SK_UASA')" id="syl-SK_UASA" class="subject-btn active">
-                <div class="icon-circle" style="background:#ff477e;">🇲🇾</div>
-                <span>SK Malay</span>
-            </button>
-            <button onclick="setSyllabus('SJKC_UASA')" id="syl-SJKC_UASA" class="subject-btn">
-                <div class="icon-circle" style="background:#4cc9f0;">🇨🇳</div>
-                <span>SJKC Mandarin</span>
-            </button>
-            <button onclick="setSyllabus('BRITISH_CORE')" id="syl-BRITISH_CORE" class="subject-btn">
-                <div class="icon-circle" style="background:#f72585;">🇬🇧</div>
-                <span>British English</span>
-            </button>
+    <div class="app-card">
+        <div class="app-title">🚀 MathHero Portal</div>
+        
+        <!-- Step 1: Syllabus Choices -->
+        <span class="section-label">📋 Step 1: Select Syllabus Track</span>
+        <div class="track-row">
+            <button onclick="changeSyllabus('SK_UASA')" id="syl-SK_UASA" class="choice-btn active">SK Malay</button>
+            <button onclick="changeSyllabus('SJKC_UASA')" id="syl-SJKC_UASA" class="choice-btn">SJKC 中文</button>
+            <button onclick="changeSyllabus('BRITISH_CORE')" id="syl-BRITISH_CORE" class="choice-btn">British Eng</button>
         </div>
 
-        <!-- Local Schools Age Group Tabs Layout Bar -->
-        <div class="level-tabs" id="local-age-container" style="display: flex;">
-            <button onclick="setAge('6_7')" id="age-6_7" class="level-btn active">Ages 6-7 (Std 1)</button>
-            <button onclick="setAge('8')" id="age-8" class="level-btn">Age 8 (Std 2)</button>
-            <button onclick="setAge('9')" id="age-9" class="level-btn">Age 9 (Std 3)</button>
-            <button onclick="setAge('10')" id="age-10" class="level-btn">Age 10 (Std 4)</button>
-            <button onclick="setAge('11')" id="age-11" class="level-btn">Age 11 (Std 5)</button>
-            <button onclick="setAge('12')" id="age-12" class="level-btn">Age 12 (Std 6)</button>
-        </div>
-
-        <!-- International Schools Age Group Tabs Layout Bar -->
-        <div class="level-tabs" id="british-age-container" style="display: none;">
-            <button onclick="setAge('5_6')" id="age-5_6" class="level-btn">Ages 5-6 (Yr 1)</button>
-            <button onclick="setAge('7')" id="age-b7" class="level-btn">Age 7 (Yr 2)</button>
-            <button onclick="setAge('8')" id="age-b8" class="level-btn">Age 8 (Yr 3)</button>
-            <button onclick="setAge('9')" id="age-b9" class="level-btn">Age 9 (Yr 4)</button>
-            <button onclick="setAge('10')" id="age-b10" class="level-btn">Age 10 (Yr 5)</button>
-            <button onclick="setAge('11')" id="age-b11" class="level-btn">Age 11 (Yr 6)</button>
-        </div>
-
-        <!-- Notebook Chalkboard Screen Panel -->
-        <div class="chalkboard-container">
-            <div class="grid-paper" id="problem-screen">
-                <div id="equation-display">Loading core content tracks...</div>
+        <!-- Step 2: Permanent Local School Grid Container -->
+        <div class="age-panel-group" id="local-box" style="display: block;">
+            <span class="section-label" style="color:#ff477e;">🇲🇾 Local UASA Levels</span>
+            <div class="age-buttons-row">
+                <button onclick="changeAge('6_7')" id="age-6_7" class="choice-btn active">Ages 6-7 (Std 1)</button>
+                <button onclick="changeAge('8')" id="age-8" class="choice-btn">Age 8 (Std 2)</button>
+                <button onclick="changeAge('9')" id="age-9" class="choice-btn">Age 9 (Std 3)</button>
+                <button onclick="changeAge('10')" id="age-10" class="choice-btn">Age 10 (Std 4)</button>
+                <button onclick="changeAge('11')" id="age-11" class="choice-btn">Age 11 (Std 5)</button>
+                <button onclick="changeAge('12')" id="age-12" class="choice-btn">Age 12 (Std 6)</button>
             </div>
         </div>
 
-        <!-- Numeric Game Control Keypad -->
-        <div class="numpad-container">
-            <button onclick="pressNum(1)" class="num-key">1</button>
-            <button onclick="pressNum(2)" class="num-key">2</button>
-            <button onclick="pressNum(3)" class="num-key">3</button>
-            <button onclick="pressNum(4)" class="num-key">4</button>
-            <button onclick="pressNum(5)" class="num-key">5</button>
-            <button onclick="pressNum(6)" class="num-key">6</button>
-            <button onclick="pressNum(7)" class="num-key">7</button>
-            <button onclick="pressNum(8)" class="num-key">8</button>
-            <button onclick="pressNum(9)" class="num-key">9</button>
-            <button onclick="clearInput()" class="num-key action-clear">⌫</button>
-            <button onclick="validateAnswer()" class="num-key action-check">Check True ✓</button>
+        <!-- Step 3: Permanent British International Grid Container -->
+        <div class="age-panel-group" id="british-box" style="display: none;">
+            <span class="section-label" style="color:#f72585;">🇬🇧 British Primary Levels</span>
+            <div class="age-buttons-row">
+                <button onclick="changeAge('5_6')" id="age-5_6" class="choice-btn">Ages 5-6 (Yr 1)</button>
+                <button onclick="changeAge('7')" id="age-b7" class="choice-btn">Age 7 (Yr 2)</button>
+                <button onclick="changeAge('8')" id="age-b8" class="choice-btn">Age 8 (Yr 3)</button>
+                <button onclick="changeAge('9')" id="age-b9" class="choice-btn">Age 9 (Yr 4)</button>
+                <button onclick="changeAge('10')" id="age-b10" class="choice-btn">Age 10 (Yr 5)</button>
+                <button onclick="changeAge('11')" id="age-b11" class="choice-btn">Age 11 (Yr 6)</button>
+            </div>
         </div>
-    </main>
+        
+        <!-- Visual Content Display Module -->
+        <span class="section-label">📡 Live Program Terminal</span>
+        <div class="chalkboard" id="console-screen">Loading math syllabus database tracks...</div>
+    </div>
+
+    <!-- Numeric Input Pad -->
+    <div class="numpad">
+        <button onclick="typeNum(1)" class="key">1</button>
+        <button onclick="typeNum(2)" class="key">2</button>
+        <button onclick="typeNum(3)" class="key">3</button>
+        <button onclick="typeNum(4)" class="key">4</button>
+        <button onclick="typeNum(5)" class="key">5</button>
+        <button onclick="typeNum(6)" class="key">6</button>
+        <button onclick="typeNum(7)" class="key">7</button>
+        <button onclick="typeNum(8)" class="key">8</button>
+        <button onclick="typeNum(9)" class="key">9</button>
+        <button onclick="wipeNum()" class="key" style="background:#ff477e; color:white; border-color:#ff477e;">⌫</button>
+        <button onclick="submitAnswer()" class="key" style="background:#34d399; color:white; border-color:#34d399; grid-column: span 2;">Verify Answer ✓</button>
+    </div>
 
     <script>
-        let selectedAge = '6_7';
-        let selectedSyllabus = 'SK_UASA';
-        let typedInput = "";
+        let track = 'SK_UASA';
+        let ageGroup = '6_7';
+        let currentInput = "";
 
-        function forceCacheWipe() {
-            window.location.href = window.location.origin + window.location.pathname + '?refresh=' + Math.random();
-        }
-
-        function setSyllabus(val) {
-            selectedSyllabus = val;
-            document.querySelectorAll('.subject-grid .subject-btn').forEach(b => b.classList.remove('active'));
+        function changeSyllabus(val) {
+            track = val;
+            document.querySelectorAll('.track-row .choice-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('syl-' + val).classList.add('active');
             
-            const localBar = document.getElementById('local-age-container');
-            const britishBar = document.getElementById('british-age-container');
-            
-            if (val === 'BRITISH_CORE') {
-                localBar.style.display = 'none';
-                britishBar.style.display = 'flex';
-                selectedAge = '5_6';
-                document.querySelectorAll('#british-age-container .level-btn').forEach(b => b.classList.remove('active'));
+            if(val === 'BRITISH_CORE') {
+                document.getElementById('local-box').style.display = 'none';
+                document.getElementById('british-box').style.display = 'block';
+                ageGroup = '5_6';
+                document.querySelectorAll('#british-box .choice-btn').forEach(b => b.classList.remove('active'));
                 document.getElementById('age-5_6').classList.add('active');
             } else {
-                localBar.style.display = 'flex';
-                britishBar.style.display = 'none';
-                selectedAge = '6_7';
-                document.querySelectorAll('#local-age-container .level-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById('local-box').style.display = 'block';
+                document.getElementById('british-box').style.display = 'none';
+                ageGroup = '6_7';
+                document.querySelectorAll('#local-box .choice-btn').forEach(b => b.classList.remove('active'));
                 document.getElementById('age-6_7').classList.add('active');
             }
-            syncEngine();
+            pullContent();
         }
 
-        function setAge(val) {
-            selectedAge = val;
-            const containerId = selectedSyllabus === 'BRITISH_CORE' ? 'british-age-container' : 'local-age-container';
-            document.querySelectorAll('#' + containerId + ' .level-btn').forEach(b => b.classList.remove('active'));
+        function changeAge(val) {
+            ageGroup = val;
+            const contextId = (track === 'BRITISH_CORE') ? 'british-box' : 'local-box';
+            document.querySelectorAll('#' + contextId + ' .choice-btn').forEach(b => b.classList.remove('active'));
             
-            if (selectedSyllabus === 'BRITISH_CORE') {
+            if(track === 'BRITISH_CORE') {
                 if(val === '5_6') document.getElementById('age-5_6').classList.add('active');
                 else document.getElementById('age-b' + val).classList.add('active');
             } else {
-0, user-scalable=no">
-    <title>MathHero Kids Learning Game</title>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #fffae6; color: #2d3748; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .cache-breaker-btn { position: fixed; top: 10px; right: 10px; background: #0f172a; color: #34d399; font-weight: bold; border: 2px solid #34d399; padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; z-index: 99999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .app-header { width: 100%; max-width: 480px; background: #ff477e; color: white; padding: 12px 16px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 20px 20px; box-shadow: 0 4px 10px rgba(255, 71, 126, 0.2); margin-top: 45px; }
-        .app-title { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
-        .progress-indicator { background: rgba(0,0,0,0.15); padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: bold; }
-        .main-container { width: 100%; max-width: 480px; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; }
-        .subject-grid { display: grid; grid-template-cols: repeat(3, 1fr); gap: 8px; margin-bottom: 4px; }
-        .subject-btn { background: white; border: 3px solid #e2e8f0; border-radius: 16px; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform 0.1s; }
-        .subject-btn.active { border-color: #4cc9f0 !important; background: #e8f7fc !important; }
-        .icon-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; font-weight: bold; }
-        .level-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; min-height: 45px; width: 100%; }
-        .level-btn { background: #fff; border: 2px solid #cbd5e1; padding: 8px 14px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-        .level-btn.active { background: #4cc9f0; color: white; border-color: #4cc9f0; }
-        .chalkboard-container { background: #ffffff; border: 4px solid #4f46e5; border-radius: 24px; padding: 24px; box-shadow: 0 8px 16px rgba(79, 70, 229, 0.1); min-height: 220px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
-        .grid-paper { width: 100%; background-size: 24px 24px; background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px), linear-gradient(to bottom, #e2e8f0 1px, transparent 1px); display: flex; flex-direction: column; align-items: center; padding: 12px 0; }
-        .math-line { border-top: 5px solid #1e293b; margin-top: 4px; width: 120px; display: inline-block; }
-        .input-box-display { color: #ff477e; font-weight: 900; background: #fff5f7; border: 3px dashed #ff477e; padding: 2px 12px; border-radius: 10px; min-width: 60px; display: inline-block; text-align: center; }
-        .numpad-container { display: grid; grid-template-cols: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
-        .num-key { background: white; border: none; border-bottom: 5px solid #cbd5e1; border-radius: 16px; padding: 16px; font-size: 22px; font-weight: 900; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .num-key.action-clear { background: #ff477e; border-color: #e03162; color: white; }
-        .num-key.action-check { background: #34d399; border-color: #059669; color: white; grid-column: span 2; }
-    </style>
-</head>
-<body>
-
-    <button class="cache-breaker-btn" onclick="forceCacheWipe()">Wipe Browser Cache ⚡</button>
-
-    <nav class="app-header">
-        <div class="app-title">🚀 MathHero Club</div>
-        <div class="progress-indicator" id="progress-text">SK | Level 1</div>
-    </nav>
-
-    <main class="main-container">
-        <div class="subject-grid">
-            <button onclick="setSyllabus('SK_UASA')" id="syl-SK_UASA" class="subject-btn active">
-                <div class="icon-circle" style="background:#ff477e;">🇲🇾</div>
-                <span>SK Malay</span>
-            </button>
-            <button onclick="setSyllabus('SJKC_UASA')" id="syl-SJKC_UASA" class="subject-btn">
-                <div class="icon-circle" style="background:#4cc9f0;">🇨🇳</div>
-                <span>SJKC Mandarin</span>
-            </button>
-            <button onclick="setSyllabus('BRITISH_CORE')" id="syl-BRITISH_CORE" class="subject-btn">
-                <div class="icon-circle" style="background:#f72585;">🇬🇧</div>
-                <span>British English</span>
-            </button>
-        </div>
-
-        <div class="level-tabs" id="age-tabs-container">
-            <!-- Programmatically rendered tabs -->
-        </div>
-
-        <div class="chalkboard-container">
-            <div class="grid-paper" id="problem-screen">
-                <div id="equation-display">Loading...</div>
-            </div>
-        </div>
-
-        <div class="numpad-container">
-            <button onclick="pressNum(1)" class="num-key">1</button>
-            <button onclick="pressNum(2)" class="num-key">2</button>
-            <button onclick="pressNum(3)" class="num-key">3</button>
-            <button onclick="pressNum(4)" class="num-key">4</button>
-            <button onclick="pressNum(5)" class="num-key">5</button>
-            <button onclick="pressNum(6)" class="num-key">6</button>
-            <button onclick="pressNum(7)" class="num-key">7</button>
-            <button onclick="pressNum(8)" class="num-key">8</button>
-            <button onclick="pressNum(9)" class="num-key">9</button>
-            <button onclick="clearInput()" class="num-key action-clear">⌫</button>
-            <button onclick="validateAnswer()" class="num-key action-check">Check True ✓</button>
-        </div>
-    </main>
-
-    <script>
-        let selectedAge = '6_7';
-        let selectedSyllabus = 'SK_UASA';
-        let typedInput = "";
-
-        function forceCacheWipe() {
-            window.location.href = window.location.origin + window.location.pathname + '?refresh=' + Math.random();
+                document.getElementById('age-' + val).classList.add('active');
+            }
+            pullContent();
         }
 
-        function renderAgeTabs() {
-            const container = document.getElementById('age-tabs-container');
-            if (selectedSyllabus === 'BRITISH_CORE') {
-                if(selectedAge === '6_7' || selectedAge === '12') selectedAge = '5_6';
-                container.innerHTML = `
-                    <button onclick="setAge('5_6')" id="age-5_6" class="level-btn ${selectedAge==='5_6'?'active':''}">Ages 5-6 (Yr 1)</button>
-                    <button onclick="setAge('7')" id="age-7" class="level-btn ${selectedAge==='7'?'active':''}">Age 7 (Yr 2)</button>
-                    <button onclick="setAge('8')" id="age-8" class="level-btn ${selectedAge==='8'?'active':''}">Age 8 (Yr 3)</button>
-                    <button onclick="setAge('9')" id="age-9" class="level-btn ${selectedAge==='9'?'active':''}">Age 9 (Yr 4)</button>
-                    <button onclick="setAge('10')" id="age-10" class="level-btn ${selectedAge==='10'?'active':''}">Age 10 (Yr 5)</button>
-                    <button onclick="setAge('11')" id="age-11" class="level-btn ${selectedAge==='11'?'active':''}">Age 11 (Yr 6)</button>
-                `;
-            } else {
-                if(selectedAge === '5_6' || selectedAge === '11') selectedAge = '6_7';
-                container.innerHTML = `
-                    <button onclick="setAge('6_7')" id="age-6_7" class="level-btn ${selectedAge==='6_7'?'active':''}">Ages 6-7 (Std 1)</button>
-                    <button onclick="setAge('8')" id="age-8" class="level-btn ${selectedAge==='8'?'active':''}">Age 8 (Std 2)</button>
-                    <button onclick="setAge('9')" id="age-9" class="level-btn ${selectedAge==='9'?'active':''}">Age 9 (Std 3)</button>
-                    <button onclick="setAge('10')" id="age-10" class="level-btn ${selectedAge==='10'?'active':''}">Age 10 (Std 4)</button>
-                    <button onclick="setAge('11')" id="age-11" class="level-btn ${selectedAge==='11'?'active':''}">Age 11 (Std 5)</button>
-                    <button onclick="setAge('12')" id="age-12" class="level-btn ${selectedAge==='12'?'active':''}">Age 12 (Std 6)</button>
-                `;
+        function typeNum(n) { currentInput += n; document.getElementById('answer-slot').innerText = currentInput; }
+        function wipeNum() { currentInput = ""; document.getElementById('answer-slot').innerText = "?"; }
+        function submitAnswer() { if(!currentInput) return; alert("Answer Submitted! Sandbox Route Active."); wipeNum(); }
+
+        async function pullContent() {
+            const display = document.getElementById('console-screen');
+            try {
+                const res = await fetch('math_syllabus.json?update=' + new Date().getTime());
+                const database = await res.json();
+                const node = database.segmented_curriculums[track]["Age_" + ageGroup];
+                
+                if(ageGroup === '6_7' || ageGroup === '5_6') {
+                    display.innerHTML = `[ACTIVE TRACK]: ` + track.replace('_UASA','') + `\n[TOPIC]: ` + node.topic + `\n-----------------------------------\n    25\n  + 09\n  ------\n   [ <span id="answer-slot" style="color:#ff477e; font-weight:bold;">?</span> ]\n-----------------------------------\n🎯 Target: ` + node.exam_target;
+                } else {
+                    display.innerHTML = `[ACTIVE TRACK]: ` + track.replace('_UASA','') + `\n[TOPIC]: ` + node.topic + `\n-----------------------------------\n👉 QUESTION:\n"` + node.question + `"\n\n👉 INPUT: [ <span id="answer-slot" style="color:#ff477e; font-weight:bold;">?</span> ]\n-----------------------------------\n🎯 Benchmark: ` + node.exam_target;
+                }
+            } catch(err) {
+                display.innerHTML = "Database Syncing... Click 'SK Malay' or 'British Eng' to initialize coordinates.";
             }
         }
 
-        function setAge(val) { selectedAge = val; renderAgeTabs(); syncEngine(); }
-        
-        function setSyllabus(val) { 
-            selectedSyllabus = val; 
-            document.querySelectorAll('.subject-grid .subject-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('syl-' + val).classList.add('active'); 
-            renderAgeTabs(); 
-            syncEngine(); 
-        }
-        
-        function pressNum(num) { typedInput += num; document.getElementById('user-answer').innerText = typedInput; }
-        function clearInput() { typedInput = ""; document.getElementById('user-answer').innerText = "?"; }
-        function validateAnswer() { if(!typedInput) return; alert("Evaluation Verified!"); clearInput(); }
-
-        async function syncEngine() {
-            const screen = document.getElementById('problem-screen');
-            const progress = document.getElementById('progress-text');
-            try {
-                const response = await fetch('math_syllabus.json?nc=' + new Date().getTime());
-                const data = await response.json();
-                const module = data.segmented_curriculums[selectedSyllabus]["Age_" + selectedAge];
-                
-                let title = selectedSyllabus === 'BRITISH_CORE' ? 'Cambridge/Edexcel' : 'UASA';
+        window.onload = pullContent;
+    </script>
+</body>
+</html>
