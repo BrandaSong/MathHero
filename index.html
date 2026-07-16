@@ -15,6 +15,8 @@
         .app-view.active { display: block; }
         .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #0088cc; background: white; color: #0088cc; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; text-align: center; box-sizing: border-box; transition: 0.2s; }
         .btn:hover, .btn.selected { background: #0088cc; color: white; }
+        .chapter-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; background: #fff3f8; color: #333; border-radius: 12px; font-size: 14px; text-align: left; cursor: pointer; box-sizing: border-box; font-weight: 500; border-left: 5px solid #ff3377; }
+        .chapter-btn:hover { background: #ffe6f0; }
         .section-label { color: #ff3377; font-size: 13px; font-weight: bold; margin: 20px 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
         .status-message { background: #e6f7ff; color: #0050b3; border: 1px solid #91d5ff; padding: 10px; border-radius: 8px; font-size: 14px; text-align: center; margin-bottom: 15px; display: none; }
         .quiz-card { background: #f9f9f9; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; margin-bottom: 15px; }
@@ -26,6 +28,7 @@
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .stat-box { background: #fff3f8; border: 1px solid #ffb3d1; padding: 12px; border-radius: 10px; text-align: center; }
         .stat-num { font-size: 20px; font-weight: bold; color: #ff3377; }
+        .back-btn { background: #666; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-bottom: 10px; display: inline-block; }
     </style>
 </head>
 <body>
@@ -34,34 +37,39 @@
     <div class="header">🚀 MathHero Portal</div>
     
     <div class="nav-bar">
-        <button class="nav-tab active" onclick="switchView('syllabus-view', this)">📚 Syllabus</button>
-        <button class="nav-tab" onclick="switchView('assessment-view', this)">📝 Assessment</button>
-        <button class="nav-tab" onclick="switchView('parent-view', this)">👨‍👩‍👦 Parents</button>
+        <button id="tab-syllabus" class="nav-tab active" onclick="switchView('syllabus-view')">📚 Syllabus</button>
+        <button id="tab-assessment" class="nav-tab" onclick="switchView('assessment-view')">📝 Assessment</button>
+        <button id="tab-parent" class="nav-tab" onclick="switchView('parent-view')">👨‍👩‍👦 Parents</button>
     </div>
 
     <!-- VIEW 1: SYLLABUS TRACK & LEVELS -->
     <div id="syllabus-view" class="app-view active">
         <div id="status-banner" class="status-message"></div>
 
-        <div class="section-label">📋 Step 1: Select Syllabus Track</div>
-        <button class="btn" id="track-sk" onclick="selectTrack('SK Malay')">SK Malay</button>
-        <button class="btn" id="track-sjkc" onclick="selectTrack('SJKC 中文')">SJKC 中文</button>
-        <button class="btn" id="track-igcse" onclick="selectTrack('British Eng')">British Eng (IGCSE)</button>
+        <!-- Section A: Track & Age Selection Menu -->
+        <div id="main-menu-panel">
+            <div class="section-label">📋 Step 1: Select Syllabus Track</div>
+            <button class="btn selected" id="btn-sk" onclick="selectTrack('SK Malay', this)">SK Malay</button>
+            <button class="btn" id="btn-sjkc" onclick="selectTrack('SJKC 中文', this)">SJKC 中文</button>
+            <button class="btn" id="btn-igcse" onclick="selectTrack('British Eng', this)">British Eng (IGCSE)</button>
 
-        <div class="section-label">🏫 Step 2: Select Local UASA Level</div>
-        <button class="btn" onclick="startAssessment(1)">Ages 6-7 (Std 1)</button>
-        <button class="btn" onclick="startAssessment(2)">Age 8 (Std 2)</button>
-        <button class="btn" onclick="startAssessment(3)">Age 9 (Std 3)</button>
-        <button class="btn" onclick="startAssessment(4)">Age 10 (Std 4)</button>
-        <button class="btn" onclick="startAssessment(5)">Age 11 (Std 5)</button>
-        <button class="btn" onclick="startAssessment(6)">Age 12 (Std 6)</button>
+            <div class="section-label" id="age-section-title">🏫 Step 2: Select Local UASA Level</div>
+            <div id="age-buttons-container"></div>
+        </div>
+
+        <!-- Section B: Chapter Index Display Panel -->
+        <div id="chapter-panel" style="display: none;">
+            <button class="back-btn" onclick="hideChapters()">← Back to Levels</button>
+            <div class="section-label" id="chapter-panel-title">Chapters</div>
+            <div id="chapter-list-container"></div>
+        </div>
     </div>
 
     <!-- VIEW 2: MATHEMATICS ASSESSMENT ENGINE -->
     <div id="assessment-view" class="app-view">
-        <div class="section-label" id="quiz-title">UASA Math Assessment</div>
+        <div class="section-label" id="quiz-title">Math Assessment</div>
         <div id="quiz-container">
-            <p style="color: #666; text-align: center;">Please choose an age level under the Syllabus tab to begin your test evaluation.</p>
+            <p style="color: #666; text-align: center;">Please choose an age level and chapter under the Syllabus tab to begin your evaluation.</p>
         </div>
         <div id="quiz-result" style="margin-top: 15px; font-weight: bold; text-align: center; color: #28a745;"></div>
     </div>
@@ -99,75 +107,21 @@
 
 <script>
     let currentTrack = "SK Malay";
-    let activeLevel = 1;
+    let activeLevelLabel = "";
 
-    function switchView(viewId, tabButton) {
-        document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
-        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-        document.getElementById(viewId).classList.add('active');
-        if(tabButton) tabButton.classList.add('active');
-    }
-
-    function selectTrack(trackName) {
-        currentTrack = trackName;
-        document.getElementById('dash-track').innerText = trackName;
-        
-        let banner = document.getElementById('status-banner');
-        banner.innerText = "Changed syllabus tracking system to: " + trackName;
-        banner.style.display = "block";
-        setTimeout(() => { banner.style.display = "none"; }, 3000);
-    }
-
-    function startAssessment(level) {
-        activeLevel = level;
-        document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
-        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-        
-        document.getElementById('assessment-view').classList.add('active');
-        document.querySelectorAll('.nav-tab')[1].classList.add('active');
-        
-        document.getElementById('quiz-title').innerText = "Std " + level + " Math Evaluation (" + currentTrack + ")";
-        generateQuestions(level);
-    }
-
-    function generateQuestions(level) {
-        const container = document.getElementById('quiz-container');
-        document.getElementById('quiz-result').innerText = "";
-        let num1 = level * 6;
-        let num2 = level * 3;
-        
-        container.innerHTML = `
-            <div class="quiz-card">
-                <p><strong>Question 1:</strong> Calculate basic curriculum evaluation: What is ${num1} + ${num2}?</p>
-                <div class="quiz-options">
-                    <button class="opt-btn" onclick="checkAns(this, true)">${num1 + num2}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 + num2 - 4}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 + num2 + 2}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 * 2}</button>
-                </div>
-            </div>
-            <div class="quiz-card">
-                <p><strong>Question 2:</strong> Solve the primary module evaluation: What is ${num1 * 2} - ${num2}?</p>
-                <div class="quiz-options">
-                    <button class="opt-btn" onclick="checkAns(this, false)">${num1}</button>
-                    <button class="opt-btn" onclick="checkAns(this, true)">${(num1 * 2) - num2}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">${num2 + 1}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">0</button>
-                </div>
-            </div>
-            <button class="btn" style="background:#ff3377; color:white; border:none;" onclick="finishQuiz()">Submit Assessment Metrics</button>
-        `;
-    }
-
-    function checkAns(button, isCorrect) {
-        let parent = button.parentElement;
-        parent.querySelectorAll('.opt-btn').forEach(btn => btn.disabled = true);
-        if(isCorrect) {
-            button.classList.add('correct');
-        } else {
-            button.classList.add('wrong');
-        }
-    }
-
-    function finishQuiz() {
-        document.getElementById('quiz-result').innerText = "🎉 Assessment Saved! Evaluation score evaluated to Target Goal: A+";
+    // Textbook Databases Mapped Strictly to Years/Ages
+    const textbookSyllabus = {
+        "SK Malay": {
+            "Age 6-7 (Std 1)": ["Bab 1: Nombor Bulat hingga 100", "Bab 2: Tambah dan Tolak", "Bab 3: Pecahan Asas", "Bab 4: Wang (RM)", "Bab 5: Masa dan Waktu", "Bab 6: Ukuran & Sukatan", "Bab 7: Ruang (Bentuk 2D/3D)", "Bab 8: Pengurusan Data"],
+            "Age 8 (Std 2)": ["Bab 1: Nombor Bulat hingga 1000", "Bab 2: Tambah, Tolak, Darab, Bahagi", "Bab 3: Pecahan dan Perpuluhan", "Bab 4: Wang hingga RM100", "Bab 5: Masa dan Waktu", "Bab 6: Panjang, Jisim & Isi Padu", "Bab 7: Ruang (Poligon)", "Bab 8: Data"],
+            "Age 9 (Std 3)": ["Bab 1: Nombor Bulat hingga 10000", "Bab 2: Operasi Asas Empat Suku", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang hingga RM10000", "Bab 5: Masa & Kalendar", "Bab 6: Ukuran Metrik", "Bab 7: Ruang & Sudut", "Bab 8: Carta & Data"],
+            "Age 10 (Std 4)": ["Bab 1: Nombor Bulat hingga 100000", "Bab 2: Operasi Bergabung", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang hingga RM100000", "Bab 5: Masa dan Waktu (Abad/Dekad)", "Bab 6: Panjang, Jisim & Cecair", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Data & Piktograf"],
+            "Age 11 (Std 5)": ["Bab 1: Nombor Bulat hingga 1000000", "Bab 2: Operasi Bergabung Mahir", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang & Simpanan Pelaburan", "Bab 5: Masa & Zon Waktu", "Bab 6: Ukuran & Sukatan Lanjut", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Data (Mod, Median, Min, Julat)"],
+            "Age 12 (Std 6)": ["Bab 1: Nombor Bulat & Operasi (Nombor Perdana)", "Bab 2: Pecahan, Perpuluhan & Peratus", "Bab 3: Wang (Insurans & Cukai)", "Bab 4: Masa dan Waktu", "Bab 5: Ukuran, Jisim & Isi Padu", "Bab 6: Ruang, Sudut & Garisan", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Pengurusan Data & Kebarangkalian"]
+        },
+        "SJKC 中文": {
+            "Age 6-7 (Std 1)": ["第一章: 100以内的整数", "第二章: 基本加法与减法", "第三章: 分数基础概念", "第四章: 钱币 (RM)", "第五章: 时间与时刻", "第六章: 度量衡", "第七章: 空间 (2D/3D 图形)", "第八章: 数据处理"],
+            "Age 8 (Std 2)": ["第一章: 1000以内的整数", "第二章: 四则运算 (加、减、乘、除)", "第三章: 分数与小数", "第四章: 100令吉以内的钱币", "第五章: 时间与时刻", "第六章: 长度、质量与液体体积", "第七章: 空间 (多边形)", "第八章: 数据图表"],
+            "Age 9 (Std 3)": ["第一章: 10000以内的整数", "第二章: 整数的加减乘除", "第三章: 分数、小数与百分比", "第四章: 10000令吉以内的钱币", "第五章: 时间与日历", "第六章: 度量衡的换算", "第七章: 空间与角度", "第八章: 条形统计图"],
+            "Age 10 (Std 4)": ["第一章: 100000以内的整数", "第二章: 混合运算", "第三章: 分数、小数与百分比", "第四章: 100000令吉以内的钱币", "第五章: 时间与时刻 (年代与世纪)", "第六章: 长度、质量与液体体积", "第七章: 坐标、比与比例", "第八章: 数据处理 (象形统计图)"],
+            "Age 11 (Std 5)": ["第一章: 1000000以内的整数与基本运算", "第二章: 混合运算高级题", "第三章: 分数、小数与百分比拓展", "第四章: 钱币 (储蓄与投资规划)", "第五章: 时间与时刻", "第六章: 度量衡综合题", "第七章: 坐标、比与比例", "第八章: 数据处理 (众数、中位数、平均数)"],
