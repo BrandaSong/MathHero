@@ -16,6 +16,7 @@
         .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #0088cc; background: white; color: #0088cc; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; text-align: center; box-sizing: border-box; transition: 0.2s; }
         .btn:hover, .btn.selected { background: #0088cc; color: white; }
         .section-label { color: #ff3377; font-size: 13px; font-weight: bold; margin: 20px 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .status-message { background: #e6f7ff; color: #0050b3; border: 1px solid #91d5ff; padding: 10px; border-radius: 8px; font-size: 14px; text-align: center; margin-bottom: 15px; display: none; }
         .quiz-card { background: #f9f9f9; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; margin-bottom: 15px; }
         .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .opt-btn { padding: 10px; border: 1px solid #ccc; background: white; border-radius: 8px; cursor: pointer; font-weight: bold; }
@@ -40,6 +41,8 @@
 
     <!-- VIEW 1: SYLLABUS TRACK & LEVELS -->
     <div id="syllabus-view" class="app-view active">
+        <div id="status-banner" class="status-message"></div>
+
         <div class="section-label">📋 Step 1: Select Syllabus Track</div>
         <button class="btn" id="track-sk" onclick="selectTrack('SK Malay')">SK Malay</button>
         <button class="btn" id="track-sjkc" onclick="selectTrack('SJKC 中文')">SJKC 中文</button>
@@ -49,8 +52,9 @@
         <button class="btn" onclick="startAssessment(1)">Ages 6-7 (Std 1)</button>
         <button class="btn" onclick="startAssessment(2)">Age 8 (Std 2)</button>
         <button class="btn" onclick="startAssessment(3)">Age 9 (Std 3)</button>
-        <button class="btn" onclick="startAssessment(4)">Age 10 (Std 4)</button>
+        <button class="btn" onclick="startAssessment(4)/">Age 10 (Std 4)</button>
         <button class="btn" onclick="startAssessment(5)">Age 11 (Std 5)</button>
+        <button class="btn" onclick="startAssessment(6)">Age 12 (Std 6)</button>
     </div>
 
     <!-- VIEW 2: MATHEMATICS ASSESSMENT ENGINE -->
@@ -83,7 +87,7 @@
             </div>
             <div class="stat-box">
                 <div>Syllabus Track</div>
-                <div class="stat-num" style="font-size:14px; margin-top:8px;" id="dash-track">None Selected</div>
+                <div class="stat-num" style="font-size:14px; margin-top:8px;" id="dash-track">SK Malay</div>
             </div>
             <div class="stat-box">
                 <div>Latest Score</div>
@@ -101,20 +105,27 @@
         document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
         document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
-        event.currentTarget.classList.add('active');
+        
+        // Find tab button matching target view and light it up
+        if (viewId === 'syllabus-view') document.querySelectorAll('.nav-tab')[0].classList.add('active');
+        if (viewId === 'assessment-view') document.querySelectorAll('.nav-tab')[1].classList.add('active');
+        if (viewId === 'parent-view') document.querySelectorAll('.nav-tab')[2].classList.add('active');
     }
 
     function selectTrack(trackName) {
         currentTrack = trackName;
         document.getElementById('dash-track').innerText = trackName;
-        alert("Switched syllabus system to: " + trackName);
+        
+        // Smooth visual notice instead of breaking alert boxes
+        let banner = document.getElementById('status-banner');
+        banner.innerText = "Changed syllabus tracking system to: " + trackName;
+        banner.style.display = "block";
+        setTimeout(() => { banner.style.display = "none"; }, 3000);
     }
 
     function startAssessment(level) {
         activeLevel = level;
         switchView('assessment-view');
-        document.querySelector('[onclick="switchView(\'assessment-view\')"]').classList.add('active');
-        document.querySelector('[onclick="switchView(\'syllabus-view\')"]').classList.remove('active');
         
         document.getElementById('quiz-title').innerText = "Std " + level + " Math Evaluation (" + currentTrack + ")";
         generateQuestions(level);
@@ -123,26 +134,26 @@
     function generateQuestions(level) {
         const container = document.getElementById('quiz-container');
         document.getElementById('quiz-result').innerText = "";
-        let num1 = level * 4;
-        let num2 = level * 2;
+        let num1 = level * 6;
+        let num2 = level * 3;
         
         container.innerHTML = `
             <div class="quiz-card">
-                <p><strong>Question 1:</strong> What is ${num1} + ${num2}?</p>
+                <p><strong>Question 1:</strong> Calculate basic curriculum evaluation: What is ${num1} + ${num2}?</p>
                 <div class="quiz-options">
                     <button class="opt-btn" onclick="checkAns(this, true)">${num1 + num2}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 + num2 - 2}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 + num2 + 3}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 * num2}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 + num2 - 4}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 + num2 + 2}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 * 2}</button>
                 </div>
             </div>
             <div class="quiz-card">
-                <p><strong>Question 2:</strong> Solve for target validation: What is ${num1 + 10} - ${num2}?</p>
+                <p><strong>Question 2:</strong> Solve the primary module evaluation: What is ${num1 * 2} - ${num2}?</p>
                 <div class="quiz-options">
                     <button class="opt-btn" onclick="checkAns(this, false)">${num1}</button>
-                    <button class="opt-btn" onclick="checkAns(this, true)">${num1 + 10 - num2}</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">5</button>
-                    <button class="opt-btn" onclick="checkAns(this, false)">12</button>
+                    <button class="opt-btn" onclick="checkAns(this, true)">${(num1 * 2) - num2}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">${num2 + 1}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">0</button>
                 </div>
             </div>
             <button class="btn" style="background:#ff3377; color:white; border:none;" onclick="finishQuiz()">Submit Assessment Metrics</button>
@@ -160,23 +171,3 @@
     }
 
     function finishQuiz() {
-        document.getElementById('quiz-result').innerText = "🎉 Assessment Saved! Evaluation score evaluated to Target Goal: A+";
-        document.getElementById('dash-score').innerText = "100%";
-        document.getElementById('dash-streak').innerText = "1 Day";
-        localStorage.setItem('mathhero_score', '100%');
-    }
-
-    function saveParentData() {
-        let email = document.getElementById('parent-email').value;
-        let phone = document.getElementById('parent-phone').value;
-        localStorage.setItem('parent_email', email);
-        localStorage.setItem('parent_phone', phone);
-    }
-
-    window.onload = function() {
-        if(localStorage.getItem('parent_email')) document.getElementById('parent-email').value = localStorage.getItem('parent_email');
-        if(localStorage.getItem('parent_phone')) document.getElementById('parent-phone').value = localStorage.getItem('parent_phone');
-    }
-</script>
-
-</body>
