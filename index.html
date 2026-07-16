@@ -56,7 +56,7 @@
             <button class="btn" id="btn-igcse" onclick="selectTrack('British Eng', this)">British Eng (IGCSE)</button>
 
             <div class="section-label" id="age-section-title">🏫 Step 2: Select Local UASA Level</div>
-            <div id="age-buttons-container">Loading...</div>
+            <div id="age-buttons-container"></div>
         </div>
 
         <!-- Section B: Chapter Index Display Panel -->
@@ -120,7 +120,6 @@
     let activeLevelLabel = "";
     let isPremiumUser = false;
     
-    // Solid local database configuration (100% reliable)
     const textbookSyllabus = {
         "SK Malay": {
             "Age 6-7 (Std 1)": ["Bab 1: Nombor Bulat hingga 100", "Bab 2: Tambah dan Tolak", "Bab 3: Pecahan Asas", "Bab 4: Wang (RM)", "Bab 5: Masa dan Waktu", "Bab 6: Ukuran & Sukatan", "Bab 7: Ruang (Bentuk 2D/3D)", "Bab 8: Pengurusan Data"],
@@ -129,3 +128,5 @@
             "Age 10 (Std 4)": ["Bab 1: Nombor Bulat hingga 100000", "Bab 2: Operasi Bergabung", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang hingga RM100000", "Bab 5: Masa dan Waktu (Abad/Dekad)", "Bab 6: Panjang, Jisim & Cecair", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Data & Piktograf"],
             "Age 11 (Std 5)": ["Bab 1: Nombor Bulat hingga 1000000", "Bab 2: Operasi Bergabung Mahir", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang & Simpanan Pelaburan", "Bab 5: Masa & Zon Waktu", "Bab 6: Ukuran & Sukatan Lanjut", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Data (Mod, Median, Min, Julat)"],
             "Age 12 (Std 6)": ["Bab 1: Nombor Bulat & Operasi (Nombor Perdana)", "Bab 2: Pecahan, Perpuluhan & Peratus", "Bab 3: Wang (Insurans & Cukai)", "Bab 4: Masa dan Waktu", "Bab 5: Ukuran, Jisim & Isi Padu", "Bab 6: Ruang, Sudut & Garisan", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Pengurusan Data & Kebarangkalian"]
+        },
+        "SJKC 中文": {
