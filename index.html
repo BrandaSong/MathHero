@@ -54,7 +54,7 @@
             <button class="btn" id="btn-igcse" onclick="selectTrack('British Eng', this)">British Eng (IGCSE)</button>
 
             <div class="section-label" id="age-section-title">🏫 Step 2: Select Local UASA Level</div>
-            <div id="age-buttons-container">Synchronizing curriculum channels...</div>
+            <div id="age-buttons-container">Synchronizing channels...</div>
         </div>
 
         <!-- Section B: Chapter Index Display Panel -->
@@ -108,70 +108,20 @@
 <script>
     let currentTrack = "SK Malay";
     let activeLevelLabel = "";
-    let textbookSyllabus = {};
-
-    // Asynchronously loads structure straight from math_syllabus.json
-    async function loadSyllabusFromDatabase() {
-        try {
-            const response = await fetch('math_syllabus.json');
-            textbookSyllabus = await response.json();
-            renderAgeButtons();
-        } catch (error) {
-            console.error("Database fault. Rectifying schema connections.", error);
-        }
-    }
-
-    function renderAgeButtons() {
-        const container = document.getElementById('age-buttons-container');
-        const title = document.getElementById('age-section-title');
-        container.innerHTML = "";
-
-        if (!textbookSyllabus[currentTrack]) {
-            container.innerHTML = "<div style='color:red;'>Waiting for data streaming sync...</div>";
-            return;
-        }
-
-        if (currentTrack === "British Eng") {
-            title.innerText = "🏫 Step 2: Select British IGCSE Level (Ages 5-11)";
-        } else {
-            title.innerText = "🏫 Step 2: Select Local UASA Level (Ages 6-12)";
-        }
-
-        Object.keys(textbookSyllabus[currentTrack]).forEach(ageKey => {
-            let btn = document.createElement('button');
-            btn.className = "btn";
-            btn.innerText = ageKey;
-            btn.onclick = function() { showChapters(ageKey); };
-            container.appendChild(btn);
-        });
-    }
-
-    function switchView(viewId) {
-        document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
-        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-        document.getElementById(viewId).classList.add('active');
-        
-        if (viewId === 'syllabus-view') document.getElementById('tab-syllabus').classList.add('active');
-        if (viewId === 'assessment-view') document.getElementById('tab-assessment').classList.add('active');
-        if (viewId === 'parent-view') document.getElementById('tab-parent').classList.add('active');
-    }
-
-    function selectTrack(trackName, element) {
-        currentTrack = trackName;
-        document.getElementById('dash-track').innerText = trackName;
-        
-        document.querySelectorAll('#main-menu-panel .btn').forEach(btn => btn.classList.remove('selected'));
-        element.classList.add('selected');
-
-        renderAgeButtons();
-
-        let banner = document.getElementById('status-banner');
-        banner.innerText = "Live Synchronized: " + trackName;
-        banner.style.display = "block";
-        setTimeout(() => { banner.style.display = "none"; }, 2000);
-    }
-
-    function showChapters(ageLabel) {
-        activeLevelLabel = ageLabel;
-        document.getElementById('main-menu-panel').style.display = 'none';
-        document.getElementById('chapter-panel').style.display = 'block';
+    
+    // Built-in emergency backup database to ensure immediate loading
+    let textbookSyllabus = {
+        "SK Malay": {
+            "Age 6-7 (Std 1)": ["Bab 1: Nombor Bulat hingga 100", "Bab 2: Tambah dan Tolak", "Bab 3: Pecahan Asas", "Bab 4: Wang (RM)", "Bab 5: Masa dan Waktu", "Bab 6: Ukuran & Sukatan", "Bab 7: Ruang (Bentuk 2D/3D)", "Bab 8: Pengurusan Data"],
+            "Age 8 (Std 2)": ["Bab 1: Nombor Bulat hingga 1000", "Bab 2: Tambah, Tolak, Darab, Bahagi", "Bab 3: Pecahan dan Perpuluhan", "Bab 4: Wang hingga RM100", "Bab 5: Masa dan Waktu", "Bab 6: Panjang, Jisim & Isi Padu", "Bab 7: Ruang (Poligon)", "Bab 8: Data"],
+            "Age 9 (Std 3)": ["Bab 1: Nombor Bulat hingga 10000", "Bab 2: Operasi Asas Empat Suku", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang hingga RM10000", "Bab 5: Masa & Kalendar", "Bab 6: Ukuran Metrik", "Bab 7: Ruang & Sudut", "Bab 8: Carta & Data"],
+            "Age 10 (Std 4)": ["Bab 1: Nombor Bulat hingga 100000", "Bab 2: Operasi Bergabung", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang hingga RM100000", "Bab 5: Masa dan Waktu (Abad/Dekad)", "Bab 6: Panjang, Jisim & Cecair", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Data & Piktograf"],
+            "Age 11 (Std 5)": ["Bab 1: Nombor Bulat hingga 1000000", "Bab 2: Operasi Bergabung Mahir", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang & Simpanan Pelaburan", "Bab 5: Masa & Zon Waktu", "Bab 6: Ukuran & Sukatan Lanjut", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Data (Mod, Median, Min, Julat)"],
+            "Age 12 (Std 6)": ["Bab 1: Nombor Bulat & Operasi (Nombor Perdana)", "Bab 2: Pecahan, Perpuluhan & Peratus", "Bab 3: Wang (Insurans & Cukai)", "Bab 4: Masa dan Waktu", "Bab 5: Ukuran, Jisim & Isi Padu", "Bab 6: Ruang, Sudut & Garisan", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Pengurusan Data & Kebarangkalian"]
+        },
+        "SJKC 中文": {
+            "Age 6-7 (Std 1)": ["第一章: 100以内的整数", "第二章: 基本加法与减法", "第三章: 分数基础概念", "第四章: 钱币 (RM)", "第五章: 时间与时刻", "第六章: 度量衡", "第七章: 空间 (2D/3D 图形)", "第八章: 数据处理"],
+            "Age 8 (Std 2)": ["第一章: 1000以内的整数", "第二章: 四则运算 (加、减、乘、除)", "第三章: 分数与小数", "第四章: 100令吉以内的钱币", "第五章: 时间与时刻", "第六章: 长度、质量与液体体积", "第七章: 空间 (多边形)", "第八章: 数据图表"],
+            "Age 9 (Std 3)": ["第一章: 10000以内的整数", "第二章: 整数的加减乘除", "第三章: 分数、小数与百分比", "第四章: 10000令吉以内的钱币", "第五章: 时间与日历", "第六章: 度量衡的换算", "第七章: 空间与角度", "第八章: 条形统计图"],
+            "Age 10 (Std 4)": ["第一章: 100000以内的整数", "第二章: 混合运算", "第三章: 分数、小数与百分比", "第四章: 100000令吉以内的钱币", "第五章: 时间与时刻 (年代与世纪)", "第六章: 长度、质量与液体体积", "第七章: 坐标、比与比例", "第八章: 数据处理 (象形统计图)"],
+            "Age 11 (Std 5)": ["第一章: 1000000以内的整数与基本运算", "第二章: 混合运算高级题", "第三章: 分数、小数与百分比拓展", "第四章: 钱币 (储蓄与投资规划)", "第五章: 时间与时刻", "第六章: 度量衡综合题", "第七章: 坐标、比与比例", "第八章: 数据处理 (众数、中位数、平均数)"],
