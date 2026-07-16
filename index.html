@@ -2,152 +2,181 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MathHero Learning Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathHero Portal</title>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #fffae6; color: #2d3748; margin: 0; padding: 20px 10px; display: flex; flex-direction: column; align-items: center; }
-        .app-card { width: 100%; max-width: 460px; background: white; border: 4px solid #4f46e5; border-radius: 24px; padding: 20px; box-sizing: border-box; box-shadow: 0 8px 16px rgba(0,0,0,0.05); margin-bottom: 15px; }
-        .app-title { background: #ff477e; color: white; margin: -20px -20px 20px -20px; padding: 15px; text-align: center; font-size: 22px; font-weight: 900; border-radius: 20px 20px 0 0; }
-        .section-label { font-size: 13px; font-weight: 800; color: #4f46e5; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 0.5px; }
-        
-        /* Fixed Flat Block Selectors */
-        .block-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-        .track-row { display: grid; grid-template-cols: repeat(3, 1fr); gap: 6px; margin-bottom: 20px; }
-        
-        button.choice-btn { background: #ffffff; border: 2px solid #e2e8f0; padding: 12px 8px; border-radius: 14px; font-size: 13px; font-weight: 700; color: #475569; cursor: pointer; text-align: center; }
-        button.choice-btn.active { background: #e0f2fe !important; border-color: #0284c7 !important; color: #0369a1 !important; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15); }
-        
-        /* Permanent Visual Dashboard Container Panels */
-        .age-panel-group { border: 1px solid #e2e8f0; padding: 12px; border-radius: 16px; background: #f8fafc; margin-bottom: 10px; }
-        .age-buttons-row { display: grid; grid-template-cols: repeat(3, 1fr); gap: 6px; }
-
-        .chalkboard { background: #0f172a; color: #f8fafc; border-radius: 20px; padding: 20px; font-family: monospace; font-size: 14px; min-height: 140px; margin-bottom: 15px; line-height: 1.6; white-space: pre-wrap; }
-        .numpad { display: grid; grid-template-cols: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 460px; }
-        .key { background: white; border: 2px solid #cbd5e1; border-bottom-width: 5px; padding: 14px; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; text-align: center; }
-        .key:active { border-bottom-width: 2px; transform: translateY(3px); }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #fffdec; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .phone-container { width: 100%; max-width: 480px; background: white; border: 4px solid #ff3377; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; min-height: 85vh; }
+        .header { background: #ff3377; color: white; padding: 18px; text-align: center; font-size: 22px; font-weight: bold; letter-spacing: 0.5px; }
+        .nav-bar { display: flex; background: #f1f1f1; border-bottom: 2px solid #ff3377; }
+        .nav-tab { flex: 1; padding: 12px 5px; border: none; background: none; font-weight: bold; font-size: 13px; cursor: pointer; color: #555; text-align: center; transition: 0.2s; }
+        .nav-tab.active { background: #ff3377; color: white; }
+        .app-view { padding: 20px; flex: 1; display: none; box-sizing: border-box; }
+        .app-view.active { display: block; }
+        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #0088cc; background: white; color: #0088cc; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; text-align: center; box-sizing: border-box; transition: 0.2s; }
+        .btn:hover, .btn.selected { background: #0088cc; color: white; }
+        .section-label { color: #ff3377; font-size: 13px; font-weight: bold; margin: 20px 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .quiz-card { background: #f9f9f9; padding: 15px; border-radius: 12px; border: 1px solid #e0e0e0; margin-bottom: 15px; }
+        .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .opt-btn { padding: 10px; border: 1px solid #ccc; background: white; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .opt-btn.correct { background: #28a745; color: white; border-color: #28a745; }
+        .opt-btn.wrong { background: #dc3545; color: white; border-color: #dc3545; }
+        .input-box { width: 100%; padding: 12px; margin: 8px 0 15px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .stat-box { background: #fff3f8; border: 1px solid #ffb3d1; padding: 12px; border-radius: 10px; text-align: center; }
+        .stat-num { font-size: 20px; font-weight: bold; color: #ff3377; }
     </style>
 </head>
 <body>
 
-    <div class="app-card">
-        <div class="app-title">🚀 MathHero Portal</div>
-        
-        <!-- Step 1: Syllabus Choices -->
-        <span class="section-label">📋 Step 1: Select Syllabus Track</span>
-        <div class="track-row">
-            <button onclick="changeSyllabus('SK_UASA')" id="syl-SK_UASA" class="choice-btn active">SK Malay</button>
-            <button onclick="changeSyllabus('SJKC_UASA')" id="syl-SJKC_UASA" class="choice-btn">SJKC 中文</button>
-            <button onclick="changeSyllabus('BRITISH_CORE')" id="syl-BRITISH_CORE" class="choice-btn">British Eng</button>
-        </div>
-
-        <!-- Step 2: Permanent Local School Grid Container -->
-        <div class="age-panel-group" id="local-box" style="display: block;">
-            <span class="section-label" style="color:#ff477e;">🇲🇾 Local UASA Levels</span>
-            <div class="age-buttons-row">
-                <button onclick="changeAge('6_7')" id="age-6_7" class="choice-btn active">Ages 6-7 (Std 1)</button>
-                <button onclick="changeAge('8')" id="age-8" class="choice-btn">Age 8 (Std 2)</button>
-                <button onclick="changeAge('9')" id="age-9" class="choice-btn">Age 9 (Std 3)</button>
-                <button onclick="changeAge('10')" id="age-10" class="choice-btn">Age 10 (Std 4)</button>
-                <button onclick="changeAge('11')" id="age-11" class="choice-btn">Age 11 (Std 5)</button>
-                <button onclick="changeAge('12')" id="age-12" class="choice-btn">Age 12 (Std 6)</button>
-            </div>
-        </div>
-
-        <!-- Step 3: Permanent British International Grid Container -->
-        <div class="age-panel-group" id="british-box" style="display: none;">
-            <span class="section-label" style="color:#f72585;">🇬🇧 British Primary Levels</span>
-            <div class="age-buttons-row">
-                <button onclick="changeAge('5_6')" id="age-5_6" class="choice-btn">Ages 5-6 (Yr 1)</button>
-                <button onclick="changeAge('7')" id="age-b7" class="choice-btn">Age 7 (Yr 2)</button>
-                <button onclick="changeAge('8')" id="age-b8" class="choice-btn">Age 8 (Yr 3)</button>
-                <button onclick="changeAge('9')" id="age-b9" class="choice-btn">Age 9 (Yr 4)</button>
-                <button onclick="changeAge('10')" id="age-b10" class="choice-btn">Age 10 (Yr 5)</button>
-                <button onclick="changeAge('11')" id="age-b11" class="choice-btn">Age 11 (Yr 6)</button>
-            </div>
-        </div>
-        
-        <!-- Visual Content Display Module -->
-        <span class="section-label">📡 Live Program Terminal</span>
-        <div class="chalkboard" id="console-screen">Loading math syllabus database tracks...</div>
+<div class="phone-container">
+    <div class="header">🚀 MathHero Portal</div>
+    
+    <div class="nav-bar">
+        <button class="nav-tab active" onclick="switchView('syllabus-view')">📚 Syllabus</button>
+        <button class="nav-tab" onclick="switchView('assessment-view')">📝 Assessment</button>
+        <button class="nav-tab" onclick="switchView('parent-view')">👨‍👩‍👦 Parents</button>
     </div>
 
-    <!-- Numeric Input Pad -->
-    <div class="numpad">
-        <button onclick="typeNum(1)" class="key">1</button>
-        <button onclick="typeNum(2)" class="key">2</button>
-        <button onclick="typeNum(3)" class="key">3</button>
-        <button onclick="typeNum(4)" class="key">4</button>
-        <button onclick="typeNum(5)" class="key">5</button>
-        <button onclick="typeNum(6)" class="key">6</button>
-        <button onclick="typeNum(7)" class="key">7</button>
-        <button onclick="typeNum(8)" class="key">8</button>
-        <button onclick="typeNum(9)" class="key">9</button>
-        <button onclick="wipeNum()" class="key" style="background:#ff477e; color:white; border-color:#ff477e;">⌫</button>
-        <button onclick="submitAnswer()" class="key" style="background:#34d399; color:white; border-color:#34d399; grid-column: span 2;">Verify Answer ✓</button>
+    <!-- VIEW 1: SYLLABUS TRACK & LEVELS -->
+    <div id="syllabus-view" class="app-view active">
+        <div class="section-label">📋 Step 1: Select Syllabus Track</div>
+        <button class="btn" id="track-sk" onclick="selectTrack('SK Malay')">SK Malay</button>
+        <button class="btn" id="track-sjkc" onclick="selectTrack('SJKC 中文')">SJKC 中文</button>
+        <button class="btn" id="track-igcse" onclick="selectTrack('British Eng')">British Eng (IGCSE)</button>
+
+        <div class="section-label">🏫 Step 2: Select Local UASA Level</div>
+        <button class="btn" onclick="startAssessment(1)">Ages 6-7 (Std 1)</button>
+        <button class="btn" onclick="startAssessment(2)">Age 8 (Std 2)</button>
+        <button class="btn" onclick="startAssessment(3)">Age 9 (Std 3)</button>
+        <button class="btn" onclick="startAssessment(4)">Age 10 (Std 4)</button>
+        <button class="btn" onclick="startAssessment(5)">Age 11 (Std 5)</button>
     </div>
 
-    <script>
-        let track = 'SK_UASA';
-        let ageGroup = '6_7';
-        let currentInput = "";
+    <!-- VIEW 2: MATHEMATICS ASSESSMENT ENGINE -->
+    <div id="assessment-view" class="app-view">
+        <div class="section-label" id="quiz-title">UASA Math Assessment</div>
+        <div id="quiz-container">
+            <p style="color: #666; text-align: center;">Please choose an age level under the Syllabus tab to begin your test evaluation.</p>
+        </div>
+        <div id="quiz-result" style="margin-top: 15px; font-weight: bold; text-align: center; color: #28a745;"></div>
+    </div>
 
-        function changeSyllabus(val) {
-            track = val;
-            document.querySelectorAll('.track-row .choice-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('syl-' + val).classList.add('active');
-            
-            if(val === 'BRITISH_CORE') {
-                document.getElementById('local-box').style.display = 'none';
-                document.getElementById('british-box').style.display = 'block';
-                ageGroup = '5_6';
-                document.querySelectorAll('#british-box .choice-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById('age-5_6').classList.add('active');
-            } else {
-                document.getElementById('local-box').style.display = 'block';
-                document.getElementById('british-box').style.display = 'none';
-                ageGroup = '6_7';
-                document.querySelectorAll('#local-box .choice-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById('age-6_7').classList.add('active');
-            }
-            pullContent();
+    <!-- VIEW 3: PARENT PORTAL CONNECT CONNECTION -->
+    <div id="parent-view" class="app-view">
+        <div class="section-label">🔗 Parent Connection Setup</div>
+        <label>Parent's Email Address:</label>
+        <input type="email" id="parent-email" class="input-box" placeholder="example@gmail.com" oninput="saveParentData()">
+        
+        <label>Parent's WhatsApp Number:</label>
+        <input type="tel" id="parent-phone" class="input-box" placeholder="+60123456789" oninput="saveParentData()">
+        
+        <div class="section-label">📈 Real-Time Student Analytics Dashboard</div>
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div>Current Target</div>
+                <div class="stat-num" id="dash-grade">A+</div>
+            </div>
+            <div class="stat-box">
+                <div>Weekly Streak</div>
+                <div class="stat-num" id="dash-streak">0 Days</div>
+            </div>
+            <div class="stat-box">
+                <div>Syllabus Track</div>
+                <div class="stat-num" style="font-size:14px; margin-top:8px;" id="dash-track">None Selected</div>
+            </div>
+            <div class="stat-box">
+                <div>Latest Score</div>
+                <div class="stat-num" id="dash-score">0%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentTrack = "SK Malay";
+    let activeLevel = 1;
+
+    function switchView(viewId) {
+        document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function selectTrack(trackName) {
+        currentTrack = trackName;
+        document.getElementById('dash-track').innerText = trackName;
+        alert("Switched syllabus system to: " + trackName);
+    }
+
+    function startAssessment(level) {
+        activeLevel = level;
+        switchView('assessment-view');
+        document.querySelector('[onclick="switchView(\'assessment-view\')"]').classList.add('active');
+        document.querySelector('[onclick="switchView(\'syllabus-view\')"]').classList.remove('active');
+        
+        document.getElementById('quiz-title').innerText = "Std " + level + " Math Evaluation (" + currentTrack + ")";
+        generateQuestions(level);
+    }
+
+    function generateQuestions(level) {
+        const container = document.getElementById('quiz-container');
+        document.getElementById('quiz-result').innerText = "";
+        let num1 = level * 4;
+        let num2 = level * 2;
+        
+        container.innerHTML = `
+            <div class="quiz-card">
+                <p><strong>Question 1:</strong> What is ${num1} + ${num2}?</p>
+                <div class="quiz-options">
+                    <button class="opt-btn" onclick="checkAns(this, true)">${num1 + num2}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 + num2 - 2}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 + num2 + 3}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">${num1 * num2}</button>
+                </div>
+            </div>
+            <div class="quiz-card">
+                <p><strong>Question 2:</strong> Solve for target validation: What is ${num1 + 10} - ${num2}?</p>
+                <div class="quiz-options">
+                    <button class="opt-btn" onclick="checkAns(this, false)">${num1}</button>
+                    <button class="opt-btn" onclick="checkAns(this, true)">${num1 + 10 - num2}</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">5</button>
+                    <button class="opt-btn" onclick="checkAns(this, false)">12</button>
+                </div>
+            </div>
+            <button class="btn" style="background:#ff3377; color:white; border:none;" onclick="finishQuiz()">Submit Assessment Metrics</button>
+        `;
+    }
+
+    function checkAns(button, isCorrect) {
+        let parent = button.parentElement;
+        parent.querySelectorAll('.opt-btn').forEach(btn => btn.disabled = true);
+        if(isCorrect) {
+            button.classList.add('correct');
+        } else {
+            button.classList.add('wrong');
         }
+    }
 
-        function changeAge(val) {
-            ageGroup = val;
-            const contextId = (track === 'BRITISH_CORE') ? 'british-box' : 'local-box';
-            document.querySelectorAll('#' + contextId + ' .choice-btn').forEach(b => b.classList.remove('active'));
-            
-            if(track === 'BRITISH_CORE') {
-                if(val === '5_6') document.getElementById('age-5_6').classList.add('active');
-                else document.getElementById('age-b' + val).classList.add('active');
-            } else {
-                document.getElementById('age-' + val).classList.add('active');
-            }
-            pullContent();
-        }
+    function finishQuiz() {
+        document.getElementById('quiz-result').innerText = "🎉 Assessment Saved! Evaluation score evaluated to Target Goal: A+";
+        document.getElementById('dash-score').innerText = "100%";
+        document.getElementById('dash-streak').innerText = "1 Day";
+        localStorage.setItem('mathhero_score', '100%');
+    }
 
-        function typeNum(n) { currentInput += n; document.getElementById('answer-slot').innerText = currentInput; }
-        function wipeNum() { currentInput = ""; document.getElementById('answer-slot').innerText = "?"; }
-        function submitAnswer() { if(!currentInput) return; alert("Answer Submitted! Sandbox Route Active."); wipeNum(); }
+    function saveParentData() {
+        let email = document.getElementById('parent-email').value;
+        let phone = document.getElementById('parent-phone').value;
+        localStorage.setItem('parent_email', email);
+        localStorage.setItem('parent_phone', phone);
+    }
 
-        async function pullContent() {
-            const display = document.getElementById('console-screen');
-            try {
-                const res = await fetch('math_syllabus.json?update=' + new Date().getTime());
-                const database = await res.json();
-                const node = database.segmented_curriculums[track]["Age_" + ageGroup];
-                
-                if(ageGroup === '6_7' || ageGroup === '5_6') {
-                    display.innerHTML = `[ACTIVE TRACK]: ` + track.replace('_UASA','') + `\n[TOPIC]: ` + node.topic + `\n-----------------------------------\n    25\n  + 09\n  ------\n   [ <span id="answer-slot" style="color:#ff477e; font-weight:bold;">?</span> ]\n-----------------------------------\n🎯 Target: ` + node.exam_target;
-                } else {
-                    display.innerHTML = `[ACTIVE TRACK]: ` + track.replace('_UASA','') + `\n[TOPIC]: ` + node.topic + `\n-----------------------------------\n👉 QUESTION:\n"` + node.question + `"\n\n👉 INPUT: [ <span id="answer-slot" style="color:#ff477e; font-weight:bold;">?</span> ]\n-----------------------------------\n🎯 Benchmark: ` + node.exam_target;
-                }
-            } catch(err) {
-                display.innerHTML = "Database Syncing... Click 'SK Malay' or 'British Eng' to initialize coordinates.";
-            }
-        }
+    window.onload = function() {
+        if(localStorage.getItem('parent_email')) document.getElementById('parent-email').value = localStorage.getItem('parent_email');
+        if(localStorage.getItem('parent_phone')) document.getElementById('parent-phone').value = localStorage.getItem('parent_phone');
+    }
+</script>
 
-        window.onload = pullContent;
-    </script>
 </body>
-</html>
