@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathHero Portal</title> 
+    <title>MathHero Portal</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #fffdec; margin: 0; padding: 15px; display: flex; justify-content: center; }
         .phone-container { width: 100%; max-width: 480px; background: white; border: 4px solid #ff3377; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; height: 85vh; }
@@ -29,7 +29,6 @@
         .stat-num { font-size: 20px; font-weight: bold; color: #ff3377; }
         .back-btn { background: #666; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; margin-bottom: 10px; display: inline-block; }
         
-        /* Premium Paywall Styling */
         .premium-card { background: linear-gradient(135deg, #ffeef4 0%, #fff6e6 100%); border: 2px dashed #ff3377; border-radius: 16px; padding: 20px; text-align: center; margin: 15px 0; }
         .price-badge { font-size: 28px; font-weight: 900; color: #ff3377; margin: 10px 0; }
         .badge-premium { background: #ff3377; color: white; padding: 3px 8px; border-radius: 20px; font-size: 11px; display: inline-block; vertical-align: middle; margin-left: 5px; }
@@ -48,15 +47,33 @@
 
     <!-- VIEW 1: SYLLABUS TRACK & LEVELS -->
     <div id="syllabus-view" class="app-view active">
-        <!-- Section A: Track & Age Selection Menu -->
         <div id="main-menu-panel">
             <div class="section-label">📋 Step 1: Select Syllabus Track</div>
             <button class="btn selected" id="btn-sk" onclick="selectTrack('SK Malay', this)">SK Malay</button>
             <button class="btn" id="btn-sjkc" onclick="selectTrack('SJKC 中文', this)">SJKC 中文</button>
             <button class="btn" id="btn-igcse" onclick="selectTrack('British Eng', this)">British Eng (IGCSE)</button>
 
-            <div class="section-label" id="age-section-title">🏫 Step 2: Select Local UASA Level</div>
-            <div id="age-buttons-container"></div>
+            <div class="section-label" id="age-section-title">🏫 Step 2: Select Local UASA Level (Ages 6-12)</div>
+            
+            <!-- Hardcoded 100% Reliable Lists -->
+            <div id="container-sk-buttons">
+                <button class="btn" onclick="showChapters('Age 6-7 (Std 1)')">Ages 6-7 (Std 1)</button>
+                <button class="btn" onclick="showChapters('Age 8 (Std 2)')">Age 8 (Std 2)</button>
+                <button class="btn" onclick="showChapters('Age 9 (Std 3)')">Age 9 (Std 3)</button>
+                <button class="btn" onclick="showChapters('Age 10 (Std 4)')">Age 10 (Std 4)</button>
+                <button class="btn" onclick="showChapters('Age 11 (Std 5)')">Age 11 (Std 5)</button>
+                <button class="btn" onclick="showChapters('Age 12 (Std 6)')">Age 12 (Std 6)</button>
+            </div>
+            
+            <div id="container-igcse-buttons" style="display: none;">
+                <button class="btn" onclick="showChapters('Age 5 (Year 1)')">Age 5 (Year 1)</button>
+                <button class="btn" onclick="showChapters('Age 6 (Year 2)')">Age 6 (Year 2)</button>
+                <button class="btn" onclick="showChapters('Age 7 (Year 3)')">Age 7 (Year 3)</button>
+                <button class="btn" onclick="showChapters('Age 8 (Year 4)')">Age 8 (Year 4)</button>
+                <button class="btn" onclick="showChapters('Age 9 (Year 5)')">Age 9 (Year 5)</button>
+                <button class="btn" onclick="showChapters('Age 10 (Year 6)')">Age 10 (Year 6)</button>
+                <button class="btn" onclick="showChapters('Age 11 (Primary Ext)')">Age 11 (Primary Ext)</button>
+            </div>
         </div>
 
         <!-- Section B: Chapter Index Display Panel -->
@@ -85,7 +102,6 @@
         <label>Parent's WhatsApp Number:</label>
         <input type="tel" id="parent-phone" class="input-box" placeholder="+60123456789" oninput="saveParentData()">
         
-        <!-- Premium Monetization Module -->
         <div class="premium-card" id="premium-box">
             <div style="font-weight: bold; color: #333; font-size: 16px;">🚀 Unlock Premium Analytics & Reports</div>
             <p style="font-size: 13px; color: #666; margin: 5px 0;">Get structural chapter tracking, AI evaluation reviews, and automated study alerts.</p>
@@ -118,15 +134,7 @@
 <script>
     let currentTrack = "SK Malay";
     let activeLevelLabel = "";
-    let isPremiumUser = false;
     
     const textbookSyllabus = {
         "SK Malay": {
             "Age 6-7 (Std 1)": ["Bab 1: Nombor Bulat hingga 100", "Bab 2: Tambah dan Tolak", "Bab 3: Pecahan Asas", "Bab 4: Wang (RM)", "Bab 5: Masa dan Waktu", "Bab 6: Ukuran & Sukatan", "Bab 7: Ruang (Bentuk 2D/3D)", "Bab 8: Pengurusan Data"],
-            "Age 8 (Std 2)": ["Bab 1: Nombor Bulat hingga 1000", "Bab 2: Tambah, Tolak, Darab, Bahagi", "Bab 3: Pecahan dan Perpuluhan", "Bab 4: Wang hingga RM100", "Bab 5: Masa dan Waktu", "Bab 6: Panjang, Jisim & Isi Padu", "Bab 7: Ruang (Poligon)", "Bab 8: Data"],
-            "Age 9 (Std 3)": ["Bab 1: Nombor Bulat hingga 10000", "Bab 2: Operasi Asas Empat Suku", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang hingga RM10000", "Bab 5: Masa & Kalendar", "Bab 6: Ukuran Metrik", "Bab 7: Ruang & Sudut", "Bab 8: Carta & Data"],
-            "Age 10 (Std 4)": ["Bab 1: Nombor Bulat hingga 100000", "Bab 2: Operasi Bergabung", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang hingga RM100000", "Bab 5: Masa dan Waktu (Abad/Dekad)", "Bab 6: Panjang, Jisim & Cecair", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Data & Piktograf"],
-            "Age 11 (Std 5)": ["Bab 1: Nombor Bulat hingga 1000000", "Bab 2: Operasi Bergabung Mahir", "Bab 3: Pecahan, Perpuluhan & Peratus", "Bab 4: Wang & Simpanan Pelaburan", "Bab 5: Masa & Zon Waktu", "Bab 6: Ukuran & Sukatan Lanjut", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Data (Mod, Median, Min, Julat)"],
-            "Age 12 (Std 6)": ["Bab 1: Nombor Bulat & Operasi (Nombor Perdana)", "Bab 2: Pecahan, Perpuluhan & Peratus", "Bab 3: Wang (Insurans & Cukai)", "Bab 4: Masa dan Waktu", "Bab 5: Ukuran, Jisim & Isi Padu", "Bab 6: Ruang, Sudut & Garisan", "Bab 7: Koordinat, Nisbah & Keadaran", "Bab 8: Pengurusan Data & Kebarangkalian"]
-        },
-        "SJKC 中文": {
