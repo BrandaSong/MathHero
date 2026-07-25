@@ -190,3 +190,125 @@ const COMPLETE_MATH_SYLLABUS = {
         "Year 6 - Ch 1: 整数与运算 (质数与大数)", "Year 6 - Ch 2: 分数、小数与百分比", "Year 6 - Ch 3: 钱币 (利息、消费税)", "Year 6 - Ch 4: 时间与时刻 (时区)", "Year 6 - Ch 5: 度量衡与转换", "Year 6 - Ch 6: 空间 (角度与多边形)", "Year 6 - Ch 7: 坐标、比与比例", "Year 6 - Ch 8: 数据处理与概率"
     ],
     "international_igcse_primary": [
+        "Stage 1 - Ch 1: Numbers & Place Value", "Stage 1 - Ch 2: Calculation (Addition/Subtraction)", "Stage 1 - Ch 3: Geometry (2D/3D shapes)", "Stage 1 - Ch 4: Measure (Length/Mass)", "Stage 1 - Ch 5: Time", "Stage 1 - Ch 6: Data handling",
+        "Stage 2 - Ch 1: Counting to 1000", "Stage 2 - Ch 2: Calculation (Multiplication/Division)", "Stage 2 - Ch 3: Fractions introduction", "Stage 2 - Ch 4: Money Systems", "Stage 2 - Ch 5: Time & Calendar", "Stage 2 - Ch 6: Standard Metric Measures", "Stage 2 - Ch 7: Geometry Symmetry", "Stage 2 - Ch 8: Frequency Tables & Graphs",
+        "Stage 3 - Ch 1: Negative Numbers & Estimation", "Stage 3 - Ch 2: Mental Strategies", "Stage 3 - Ch 3: Fractions & Decimals Mapping", "Stage 3 - Ch 4: Money Financial Math", "Stage 3 - Ch 5: Time Intervals", "Stage 3 - Ch 6: Metric Unit Conversions", "Stage 3 - Ch 7: Shapes & Angles", "Stage 3 - Ch 8: Carroll & Data Graphs",
+        "Stage 4 - Ch 1: Numbers to 10000 (Multiples)", "Stage 4 - Ch 2: Decimals & Equivalent Fractions", "Stage 4 - Ch 3: Analytical Grid Calculations", "Stage 4 - Ch 4: Area & Perimeter Logic", "Stage 4 - Ch 5: World Clocks & Time Zones", "Stage 4 - Ch 6: Shape Properties", "Stage 4 - Ch 7: Grid Translation & Movement", "Stage 4 - Ch 8: Probability Outcome Trees",
+        "Stage 5 - Ch 1: Square Roots & Cube Numbers", "Stage 5 - Ch 2: Mixed Fractions Integration", "Stage 5 - Ch 3: Ratio & Proportion Foundations", "Stage 5 - Ch 4: Compound Shapes Formulas", "Stage 5 - Ch 5: Acute, Obtuse & Reflex Angles", "Stage 5 - Ch 6: Calculating Mean and Range",
+        "Stage 6 - Ch 1: Algebraic Expressions & Variables", "Stage 6 - Ch 2: Primes, Factors, HCF & LCM", "Stage 6 - Ch 3: Multiplying Fractions Operations", "Stage 6 - Ch 4: Ratio and Direct Proportion Mapping", "Stage 6 - Ch 5: Mass, Capacity & Time Problems", "Stage 6 - Ch 6: Four-Quadrant Coordinate Grid Mapping", "Stage 6 - Ch 7: Probability and Statistical Measures"
+    ]
+};
+
+let userAnalytics = { streak: 0, correctCount: 0, totalAttempts: 0, weaknessMap: { addition: 0, subtraction: 0, multiplication: 0 } };
+let selectedUniverse = "malaysia_sk_national";
+
+function generateTimelineNodes() {
+    const parentContainer = document.getElementById("syllabus-timeline-injector");
+    if (!parentContainer) return;
+    parentContainer.innerHTML = "";
+
+    COMPLETE_MATH_SYLLABUS[selectedUniverse].forEach((chapter) => {
+        const div = document.createElement("div");
+        div.className = "quest-node";
+        div.innerHTML = `
+            <div>
+                <div class="quest-title" style="font-weight:bold;">${chapter}</div>
+                <div class="quest-status">⚔️ AVAILABLE CHALLENGE</div>
+            </div>
+            <button class="arena-btn" onclick="executeDynamicCombat('${chapter}')">ENTER ARENA</button>
+        `;
+        parentContainer.appendChild(div);
+    });
+}
+
+function executeDynamicCombat(chapterName) {
+    const numA = Math.floor(Math.random() * 12) + 1;
+    const numB = Math.floor(Math.random() * 12) + 1;
+    let computedAnswer = 0; let operatorSign = "+"; let mathSkillCategory = "addition";
+
+    if (chapterName.includes("Darab") || chapterName.includes("Multiplication") || chapterName.includes("四则") || chapterName.includes("乘")) {
+        operatorSign = "×"; computedAnswer = numA * numB; mathSkillCategory = "multiplication";
+    } else if (chapterName.includes("Tolak") || chapterName.includes("Subtraction") || chapterName.includes("减")) {
+        operatorSign = "-"; computedAnswer = Math.max(numA, numB) - Math.min(numA, numB); mathSkillCategory = "subtraction";
+    } else {
+        computedAnswer = numA + numB;
+    }
+
+    const problemString = `What is ${operatorSign === "-" ? Math.max(numA, numB) : numA} ${operatorSign} ${operatorSign === "-" ? Math.min(numA, numB) : numB}?`;
+    const userPromptResponse = prompt(`👾 CHALLENGE ARENA: ${chapterName}\n\n${problemString}`);
+    
+    if (userPromptResponse !== null) {
+        userAnalytics.totalAttempts++;
+        const parsedVal = parseInt(userPromptResponse.trim());
+        if (parsedVal === computedAnswer) {
+            userAnalytics.correctCount++; userAnalytics.streak++;
+            alert(`🎉 EXCELLENT SCORE! Correct strike.`);
+        } else {
+            userAnalytics.streak = 0; userAnalytics.weaknessMap[mathSkillCategory]++;
+            alert(`💥 SHIELD BROKEN! Incorrect. The correct answer was ${computedAnswer}.`);
+        }
+        recalculateAndRefreshAnalytics();
+    }
+}
+
+function recalculateAndRefreshAnalytics() {
+    document.getElementById("hud-streak").innerText = `${userAnalytics.streak} 🔥`;
+    document.getElementById("stat-attempts").innerText = userAnalytics.totalAttempts;
+    const calculationAccuracy = userAnalytics.totalAttempts > 0 ? Math.round((userAnalytics.correctCount / userAnalytics.totalAttempts) * 100) : 0;
+    document.getElementById("stat-accuracy").innerText = `${calculationAccuracy}%`;
+
+    let primaryWeakness = "None detected yet"; let highestMistakeCount = 0;
+    for (let categoryKey in userAnalytics.weaknessMap) {
+        if (userAnalytics.weaknessMap[categoryKey] > highestMistakeCount) {
+            highestMistakeCount = userAnalytics.weaknessMap[categoryKey];
+            primaryWeakness = `Needs improvement in standard operational ${categoryKey.toUpperCase()} tasks`;
+        }
+    }
+    document.getElementById("stat-weakness").innerText = primaryWeakness;
+
+    let titleRank = "MATH APPRENTICE";
+    if (userAnalytics.correctCount >= 3) titleRank = "EQUATION COMMANDER";
+    if (userAnalytics.correctCount >= 7) titleRank = "ALGEBRAIC OVERLORD";
+    document.getElementById("hud-rank").innerText = titleRank;
+
+    const dateToday = new Date().toLocaleDateString('en-MY', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById("parent-report-text").innerText = `
+[WEEKLY REPORT COMPILED ON: ${dateToday}]
+------------------------------------------------------
+Student Tracking Profile Universe: ${selectedUniverse.replace(/_/g, ' ').toUpperCase()}
+Current Analytical Performance Index Status:
+-> Total Tasks Solved: ${userAnalytics.correctCount} / ${userAnalytics.totalAttempts} Questions
+-> Overall Grade Accuracy: ${calculationAccuracy}%
+-> Diagnostic Status: ${primaryWeakness}
+------------------------------------------------------`.trim();
+}
+
+function initializeToyyibpayCheckout() {
+    alert("Redirecting to secured Shariah-compliant Malaysian Online Bank Transfer (FPX)...");
+    window.location.href = `https://toyyibpay.com{encodeURIComponent(window.location.href)}`;
+}
+
+function switchView(targetSectionId, buttonElement) {
+    document.querySelectorAll('.view-section').forEach(section => section.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(targetSectionId).classList.add('active');
+    buttonElement.classList.add('active');
+}
+
+function changeActiveUniverse(selectedKey) { selectedUniverse = selectedKey; generateTimelineNodes(); }
+
+window.onload = function() {
+    generateTimelineNodes();
+};
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+    
