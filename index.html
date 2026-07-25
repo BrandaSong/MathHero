@@ -3,217 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathHero - Malaysia Master Math</title>
+    <title>MathHero - Premium Malaysia Learning Portal</title>
     <style>
         body {
-            background-color: #0d0c1d;
+            background-color: #0b0a14;
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 20px;
         }
         .cyber-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background: #16162a;
-            padding: 25px;
+            background: #121124;
+            padding: 30px;
             border-radius: 16px;
-            border: 2px solid #4f46e5;
-            box-shadow: 0 0 20px rgba(79, 70, 229, 0.3);
+            border: 2px solid #6366f1;
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
         }
-        .score-banner {
+        .header-panel {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: #1f1f3e;
-            padding: 15px 25px;
-            border-radius: 10px;
+            background: #1a1936;
+            padding: 20px;
+            border-radius: 12px;
             margin-bottom: 25px;
-            border-left: 5px solid #06b6d4;
+            border-left: 6px solid #06b6d4;
         }
-        .stat-num {
-            font-size: 24px;
+        .metric-box h4 { margin: 0; color: #818cf8; font-size: 14px; text-transform: uppercase; }
+        .metric-box div { font-size: 22px; font-weight: bold; color: #06b6d4; }
+        .tab-menu {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .tab-btn {
+            background: #1e1b4b;
+            color: #818cf8;
+            border: 1px solid #6366f1;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
             font-weight: bold;
-            color: #06b6d4;
         }
+        .tab-btn.active {
+            background: #6366f1;
+            color: #ffffff;
+        }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
         .quest-node {
-            background: #121214;
+            background: #16152d;
             padding: 20px;
             margin: 15px 0;
-            border-radius: 12px;
-            border: 2px solid #a855f7;
-            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.1);
+            border-radius: 10px;
+            border: 1px solid #4338ca;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .quest-title {
-            color: #ffffff;
-            margin: 0 0 5px 0;
-            font-size: 18px;
-        }
-        .quest-status {
-            color: #a855f7;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
         .arena-btn {
-            background: #22c55e;
-            color: #ffffff;
+            background: #10b981;
+            color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
-        .arena-btn:hover {
-            background: #16a34a;
-            transform: scale(1.05);
-        }
+        .arena-btn:hover { background: #059669; }
         .stream-selector {
-            margin-bottom: 20px;
-            padding: 10px;
-            background: #1f1f3e;
+            width: 100%;
+            padding: 12px;
+            background: #1a1936;
             color: white;
-            border: 1px solid #4f46e5;
+            border: 1px solid #6366f1;
             border-radius: 6px;
+            margin-bottom: 20px;
             font-size: 16px;
+        }
+        .report-card {
+            background: #1a1936;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #06b6d4;
+            margin-bottom: 15px;
+        }
+        .payment-box {
+            background: linear-gradient(135deg, #1e1b4b, #311042);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px dashed #d946ef;
+        }
+        .pay-btn {
+            background: #d946ef;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 0 15px rgba(217, 70, 239, 0.4);
         }
     </style>
 </head>
 <body>
 
 <div class="cyber-container">
-    <div class="score-banner">
-        <div>🚀 Master Math Hero Progress</div>
-        <div class="stat-num" id="dash-score">Combo Streak: 0🔥</div>
+    <div class="header-panel">
+        <div class="metric-box">
+            <h4>Player Rank</h4>
+            <div id="hud-rank">MATH APPRENTICE</div>
+        </div>
+        <div class="metric-box">
+            <h4>Combo Streak</h4>
+            <div id="hud-streak">0 🔥</div>
+        </div>
+        <div class="metric-box">
+            <h4>Account Status</h4>
+            <div id="hud-status" style="color:#ef4444;">FREE TRIAL</div>
+        </div>
     </div>
 
-    <!-- Interactive Navigation Options for Stream Swaps -->
-    <label for="streamSelect" style="color: #a855f7; font-weight: bold;">SELECT MATHEMATICS STREAM:</label><br>
-    <select id="streamSelect" class="stream-selector" onchange="changeSyllabusStream(this.value)">
-        <option value="malaysia_sk_national">Malaysia SK National Syllabus (Ages 6-12)</option>
-        <option value="malaysia_sjkc_vernacular">Malaysia SJKC Vernacular Syllabus (Ages 6-12)</option>
-        <option value="international_igcse_primary">International School Cambridge IGCSE Primary</option>
-    </select>
+    <div class="tab-menu">
+        <button class="tab-btn active" onclick="switchView('arena-view', this)">⚔️ QUEST ARENA</button>
+        <button class="tab-btn" onclick="switchView('parent-view', this)">📊 PARENT REPORTING</button>
+        <button class="tab-btn" onclick="switchView('payment-view', this)">💎 UPGRADE TO PRO</button>
+    </div>
 
-    <div id="syllabus-timeline-injector"></div>
+    <div id="arena-view" class="view-section active">
+        <label for="streamSelect" style="color:#818cf8; font-weight:bold; display:block; margin-bottom:8px;">SELECT CURRICULUM UNIVERSE:</label>
+        <select id="streamSelect" class="stream-selector" onchange="changeActiveUniverse(this.value)">
+            <option value="malaysia_sk_national">Malaysia SK National Coursework (Years 1-6 Complete)</option>
+            <option value="malaysia_sjkc_vernacular">Malaysia SJKC Vernacular Coursework (Years 1-6 Complete)</option>
+            <option value="international_igcse_primary">Cambridge IGCSE Primary Framework (Stages 1-6 Complete)</option>
+        </select>
+        <div id="syllabus-timeline-injector"></div>
+    </div>
+
+    <div id="parent-view" class="view-section">
+        <div class="report-card">
+            <h3 style="color:#06b6d4; margin-top:0;">📊 Real-Time Diagnostic Dashboard</h3>
+            <p><strong>Total Submissions Attempted:</strong> <span id="stat-attempts">0</span> questions</p>
+            <p><strong>Accuracy Index Rate:</strong> <span id="stat-accuracy">0%</span></p>
+            <p><strong>Identified Cognitive Weaknesses:</strong> <span id="stat-weakness" style="color:#f59e0b;">None detected yet</span></p>
+        </div>
+
+        <div class="report-card" style="border-color:#10b981;">
+            <h3 style="color:#10b981; margin-top:0;">📅 Weekly Performance Summary Card</h3>
+            <div style="background:#0f0e1c; padding:15px; border-radius:6px; font-family:monospace; color:#34d399;" id="parent-report-text">
+                No history metrics generated for this session week. Complete a chapter quest challenge above to generate metrics.
+            </div>
+        </div>
+    </div>
+
+    <div id="payment-view" class="view-section">
+        <div class="payment-box">
+            <h2 style="color:#d946ef; margin-top:0;">Unlock Unlimited Academic Progress</h2>
+            <div style="font-size:36px; font-weight:bold; color:white; margin:15px 0;">
+                RM 25.00 <span style="font-size:16px; color:#a78bfa;">/ month</span>
+            </div>
+            <button class="pay-btn" onclick="initializeToyyibpayCheckout()">UPGRADE SECURELY VIA TOYYIBPAY</button>
+        </div>
+    </div>
 </div>
 
 <script>
-// Complete Mathematical Master Database Embedded Natively 
 const COMPLETE_MATH_SYLLABUS = {
     "malaysia_sk_national": [
-        "Year 1 - Ch 1: Nombor Bulat hingga 100 (Counting & Place Value)",
-        "Year 1 - Ch 2: Tambah dan Tolak (Basic Addition & Subtraction within 100)",
-        "Year 1 - Ch 3: Pecahan (Introduction to Fractions - Half & Quarter)",
-        "Year 1 - Ch 4: Wang (Malaysian Currency - Sen & Ringgit)",
-        "Year 1 - Ch 5: Masa dan Waktu (Hours & Days of the Week)",
-        "Year 1 - Ch 6: Panjang, Jisim, dan Isi Padu Cecair (Basic Measurements)",
-        "Year 1 - Ch 7: Bentuk (2D & 3D Geometric Shapes)",
-        "Year 1 - Ch 8: Data (Basic Pictographs)",
-        "Year 2 - Ch 1: Nombor Bulat hingga 1000",
-        "Year 2 - Ch 2: Tambah, Tolak, Darab, dan Bahagi",
-        "Year 2 - Ch 3: Pecahan dan Perpuluhan",
-        "Year 2 - Ch 4: Wang (Currency Management up to RM100)",
-        "Year 2 - Ch 5: Masa dan Waktu (Reading the Clock)",
-        "Year 2 - Ch 6: Panjang, Jisim, dan Isi Padu Cecair",
-        "Year 2 - Ch 7: Bentuk (Identifying Properties of Shapes)",
-        "Year 2 - Ch 8: Kedudukan (Basic Coordinates & Grids)",
-        "Year 2 - Ch 9: Data (Bar Charts & Tables)",
-        "Year 3 - Ch 1: Nombor Bulat hingga 10000",
-        "Year 3 - Ch 2: Operasi Asas (Four Operations within 10000)",
-        "Year 3 - Ch 3: Pecahan, Perpuluhan, dan Peratus",
-        "Year 3 - Ch 4: Wang (Financial Math up to RM10000)",
-        "Year 3 - Ch 5: Masa dan Waktu (Duration, Calendar, & Time)",
-        "Year 3 - Ch 6: Ukuran dan Sukatan (Converting Standard Units)",
-        "Year 3 - Ch 7: Ruang (Prisms, Perimeters, & Parallel Lines)",
-        "Year 3 - Ch 8: Kedudukan (XY Coordinates System)",
-        "Year 3 - Ch 9: Data (Pie Charts & Interpretation)",
-        "Year 4 - Ch 1: Nombor Bulat dan Operasi hingga 100000",
-        "Year 4 - Ch 2: Pecahan, Perpuluhan, dan Peratus (Mixed Operations)",
-        "Year 4 - Ch 3: Wang (Installments, Decisions, Currencies)",
-        "Year 4 - Ch 4: Masa dan Waktu (Duration in Days, Hours)",
-        "Year 4 - Ch 5: Panjang, Jisim, dan Isi Padu Cecair",
-        "Year 4 - Ch 6: Ruang (Angles, Parallel lines, Area computation)",
-        "Year 4 - Ch 7: Koordinat, Nisbah, dan Kadaran (Ratios & Scaling)",
-        "Year 4 - Ch 8: Pengurusan Data (Bar Charts & Pictographs Analysis)",
-        "Year 5 - Ch 1: Nombor Bulat dan Operasi hingga 1000000",
-        "Year 5 - Ch 2: Pecahan, Perpuluhan, dan Peratus (Product of Fractions)",
-        "Year 5 - Ch 3: Wang (Savings, Investments, Financial Assets)",
-        "Year 5 - Ch 4: Masa dan Waktu (Decades, Centuries, Millenniums)",
-        "Year 5 - Ch 5: Ukuran (Complex Imperial and Metric Operations)",
-        "Year 5 - Ch 6: Ruang (Composite shapes, Surface areas, Volume)",
-        "Year 5 - Ch 7: Koordinat, Nisbah, dan Kadaran (Direct Proportion)",
-        "Year 5 - Ch 8: Pengurusan Data dan Kebarangkalian (Probability Theory)",
-        "Year 6 - Ch 1: Nombor Bulat dan Operasi (Prime Numbers up to 100)",
-        "Year 6 - Ch 2: Pecahan, Perpuluhan, dan Peratus",
-        "Year 6 - Ch 3: Wang (Financial Integrity, Interest Rates, Tax, Insurance)",
-        "Year 6 - Ch 4: Masa dan Waktu (Time Zones, Calculations across regions)",
-        "Year 6 - Ch 5: Ukuran (Problem solving with Compound Units)",
-        "Year 6 - Ch 6: Ruang (Interior angles, Polygons, In-depth Volume)",
-        "Year 6 - Ch 7: Koordinat, Nisbah, dan Kadaran (Complex Structural Ratios)",
-        "Year 6 - Ch 8: Pengurusan Data dan Kebarangkalian (Mode, Median, Mean, Range)"
+        "Year 1 - Ch 1: Nombor Bulat hingga 100", "Year 1 - Ch 2: Tambah dan Tolak", "Year 1 - Ch 3: Pecahan", "Year 1 - Ch 4: Wang", "Year 1 - Ch 5: Masa dan Waktu", "Year 1 - Ch 6: Panjang, Jisim & Isi Padu", "Year 1 - Ch 7: Bentuk", "Year 1 - Ch 8: Data",
+        "Year 2 - Ch 1: Nombor Bulat hingga 1000", "Year 2 - Ch 2: Tambah, Tolak, Darab, Bahagi", "Year 2 - Ch 3: Pecahan dan Perpuluhan", "Year 2 - Ch 4: Wang", "Year 2 - Ch 5: Masa dan Waktu", "Year 2 - Ch 6: Panjang, Jisim & Isi Padu Cecair", "Year 2 - Ch 7: Bentuk", "Year 2 - Ch 8: Kedudukan", "Year 2 - Ch 9: Data",
+        "Year 3 - Ch 1: Nombor Bulat hingga 10000", "Year 3 - Ch 2: Operasi Asas", "Year 3 - Ch 3: Pecahan, Perpuluhan & Peratus", "Year 3 - Ch 4: Wang", "Year 3 - Ch 5: Masa dan Waktu", "Year 3 - Ch 6: Ukuran dan Sukatan", "Year 3 - Ch 7: Ruang", "Year 3 - Ch 8: Kedudukan", "Year 3 - Ch 9: Data",
+        "Year 4 - Ch 1: Nombor Bulat dan Operasi hingga 100000", "Year 4 - Ch 2: Pecahan, Perpuluhan & Peratus", "Year 4 - Ch 3: Wang", "Year 4 - Ch 4: Masa dan Waktu", "Year 4 - Ch 5: Panjang, Jisim & Isi Padu Cecair", "Year 4 - Ch 6: Ruang", "Year 4 - Ch 7: Koordinat, Nisbah & Kadaran", "Year 4 - Ch 8: Pengurusan Data",
+        "Year 5 - Ch 1: Nombor Bulat dan Operasi hingga 1000000", "Year 5 - Ch 2: Pecahan, Perpuluhan & Peratus", "Year 5 - Ch 3: Wang", "Year 5 - Ch 4: Masa dan Waktu", "Year 5 - Ch 5: Ukuran", "Year 5 - Ch 6: Ruang", "Year 5 - Ch 7: Koordinat, Nisbah & Kadaran", "Year 5 - Ch 8: Pengurusan Data & Kebarangkalian",
+        "Year 6 - Ch 1: Nombor Bulat dan Operasi (Nombor Perdana)", "Year 6 - Ch 2: Pecahan, Perpuluhan & Peratus", "Year 6 - Ch 3: Wang (Faedah & Cukai)", "Year 6 - Ch 4: Masa dan Waktu (Zon Masa)", "Year 6 - Ch 5: Ukuran", "Year 6 - Ch 6: Ruang (Sudut & Poligon)", "Year 6 - Ch 7: Koordinat, Nisbah & Kadaran", "Year 6 - Ch 8: Pengurusan Data (Mod, Median, Min, Julat)"
     ],
     "malaysia_sjkc_vernacular": [
-        "Year 1 - Ch 1: 100以内的整数 (Integers up to 100)",
-        "Year 1 - Ch 2: 基本运算 (Addition and Subtraction)",
-        "Year 1 - Ch 3: 分数 (Introductory Fractions)",
-        "Year 1 - Ch 4: 钱币 (Malaysian Currency Studies)",
-        "Year 1 - Ch 5: 时间与时刻 (Learning Time)",
-        "Year 1 - Ch 6: 度量衡 (Length, Mass & Liquid Volumes)",
-        "Year 1 - Ch 7: 空间 (2D & 3D Shapes)",
-        "Year 1 - Ch 8: 数据处理 (Basic Data Presentation)",
-        "Year 2 - Ch 1: 1000以内的整数",
-        "Year 2 - Ch 2: 四则运算 (Four Core Operations)",
-        "Year 2 - Ch 3: 分数与小数 (Fractions & Decimals Exploration)",
-        "Year 2 - Ch 4: 钱币 (Calculations up to RM100)",
-        "Year 2 - Ch 5: 时间与时刻 (Advanced Time Reading)",
-        "Year 2 - Ch 6: 度量衡 (Metric Measurements)",
-        "Year 2 - Ch 7: 空间 (Shape Attributes)",
-        "Year 2 - Ch 8: 位置 (Grid Mapping)",
-        "Year 2 - Ch 9: 数据处理 (Bar Chart Analysis)",
-        "Year 3 - Ch 1: 10000以内的整数与运算",
-        "Year 3 - Ch 2: 基本运算 (Advanced Math Operations)",
-        "Year 3 - Ch 3: 分数、小数与百分比 (Advanced Formats)",
-        "Year 3 - Ch 4: 钱币 (Commercial Math Concepts)",
-        "Year 3 - Ch 5: 时间与时刻 (Time Intervals)",
-        "Year 3 - Ch 6: 度量衡 (Advanced System Conversions)",
-        "Year 3 - Ch 7: 空间 (Lines, Angles & Perimeters)",
-        "Year 3 - Ch 8: 位置 (Coordinate Mechanics)",
-        "Year 3 - 统计图 (Data Charts Integration)",
-        "Year 4 - Ch 1: 100000以内的整数与四则混合运算",
-        "Year 4 - Ch 2: 分数、小数与百分比的乘除法",
-        "Year 4 - Ch 3: 钱币 (理财计划、外币换算)",
-        "Year 4 - Ch 4: 时间与时刻 (跨时区计算、时间差)",
-        "Year 4 - Ch 5: 度量衡 (复名数计算)",
-        "Year 4 - Ch 6: 空间 (多边形、周长与面积)",
-        "Year 4 - Ch 7: 坐标、比与比例 (Coordinates & Dynamic Ratios)",
-        "Year 4 - Ch 8: 数据处理 (复合统计图表)",
-        "Year 5 - Ch 1: 1000000以内的整数与混合运算",
-        "Year 5 - Ch 2: 分数、小数与百分比的高级应用",
-        "Year 5 - Ch 3: 钱币 (储蓄、投资、利息利息)",
-        "Year 5 - Ch 4: 时间与时刻 (年代、世纪、千纪)",
-        "Year 5 - Ch 5: 度量衡 (复杂场景解题)",
-        "Year 5 - Ch 6: 空间 (立体图形的体积与表面积)",
-        "Year 5 - Ch 7: 坐标、比与比例 (正比例与反比例问题)",
-        "Year 5 - Ch 8: 数据处理与概率 (可能性与概率计算)",
-        "Year 6 - Ch 1: 整数与运算 (质数、百万以内的数)",
-        "Year 6 - Ch 2: 分数、小数与百分比综合应用题",
-        "Year 6 - Ch 3: 钱币 (资产与负债、利息、税收、保险)",
-        "Year 6 - Ch 4: 时间与时刻 (国际时区与计时法)",
-        "Year 6 - Ch 5: 度量衡 (高级工程度量转换)",
-        "Year 6 - Ch 6: 空间 (正多边形内角、组合图形)",
-        "Year 6 - Ch 7: 坐标、比与比例 (复杂比例解法)",
-        "Year 6 - Ch 8: 数据处理与概率 (众数、中位数、平均数、极差与概率)"
+        "Year 1 - Ch 1: 100以内的整数", "Year 1 - Ch 2: 基本运算 (加与减)", "Year 1 - Ch 3: 分数", "Year 1 - Ch 4: 钱币", "Year 1 - Ch 5: 时间与时刻", "Year 1 - Ch 6: 度量衡", "Year 1 - Ch 7: 空间 (几何形状)", "Year 1 - Ch 8: 数据处理",
+        "Year 2 - Ch 1: 1000以内的整数", "Year 2 - Ch 2: 四则运算", "Year 2 - Ch 3: 分数与小数", "Year 2 - Ch 4: 钱币", "Year 2 - Ch 5: 时间与时刻", "Year 2 - Ch 6: 度量衡", "Year 2 - Ch 7: 空间", "Year 2 - Ch 8: 位置", "Year 2 - Ch 9: 数据处理",
+        "Year 3 - Ch 1: 10000以内的整数与基本运算", "Year 3 - Ch 2: 基本运算", "Year 3 - Ch 3: 分数、小数与百分比", "Year 3 - Ch 4: 钱币", "Year 3 - Ch 5: 时间与时刻", "Year 3 - Ch 6: 度量衡", "Year 3 - Ch 7: 空间", "Year 3 - Ch 8: 位置", "Year 3 - Ch 9: 统计图",
+        "Year 4 - Ch 1: 100000以内的整数与基本运算", "Year 4 - Ch 2: 分数、小数与百分比", "Year 4 - Ch 3: 钱币", "Year 4 - Ch 4: 时间与时刻", "Year 4 - Ch 5: 度量衡", "Year 4 - Ch 6: 空间", "Year 4 - Ch 7: 坐标、比与比例", "Year 4 - Ch 8: 数据处理",
+        "Year 5 - Ch 1: 1000000以内的整数与基本运算", "Year 5 - Ch 2: 分数、小数与百分比", "Year 5 - Ch 3: 钱币", "Year 5 - Ch 4: 时间与时刻", "Year 5 - Ch 5: 度量衡", "Year 5 - Ch 6: 空间", "Year 5 - Ch 7: 坐标、比与比例", "Year 5 - Ch 8: 数据处理与概率",
+        "Year 6 - Ch 1: 整数与运算 (质数与大数)", "Year 6 - Ch 2: 分数、小数与百分比", "Year 6 - Ch 3: 钱币 (利息、消费税)", "Year 6 - Ch 4: 时间与时刻 (时区)", "Year 6 - Ch 5: 度量衡与转换", "Year 6 - Ch 6: 空间 (角度与多边形)", "Year 6 - Ch 7: 坐标、比与比例", "Year 6 - Ch 8: 数据处理与概率"
     ],
     "international_igcse_primary": [
-        "Stage 1 - Ch 1: Numbers and the Number System (Place value)",
-        "Stage 1 - Ch 2: Calculation (Addition and Subtraction strings)",
-        "Stage 1 - Ch 3: Geometry (Identifying 2D/3D structures and patterns)",
-        "Stage 1 - Ch 4: Measure (Estimating length, weight, capacity)",
-        "Stage 1 - Ch 5: Time (Reading analog clocks, days, and months)",
-        "Stage 1 - Ch 6: Data Handling (Sorting data, Venn diagrams, charts)",
-        "Stage 2 - Ch 1: Counting and Place Value (Numbers to 1000)",
