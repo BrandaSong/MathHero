@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
-    <title>MathHero - Ultimate Peperiksaan Kebangsaan & IGCSE Tracker</title>
+    <title>MathHero - Premium Malaysia Learning Portal</title>
     <style>
         body {
             background-color: #070612;
@@ -46,7 +46,6 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.2s ease;
         }
         .tab-btn.active {
             background: #6366f1;
@@ -64,7 +63,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .arena-btn {
             background: linear-gradient(135deg, #10b981, #059669);
@@ -74,9 +72,7 @@
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s;
         }
-        .arena-btn:hover { transform: scale(1.05); }
         .stream-selector {
             width: 100%;
             padding: 14px;
@@ -112,9 +108,7 @@
             border-radius: 8px;
             cursor: pointer;
             margin-top: 20px;
-            box-shadow: 0 0 20px rgba(255, 0, 234, 0.5);
         }
-        
         #boss-battle-overlay {
             display: none;
             position: fixed;
@@ -131,7 +125,6 @@
             padding: 35px;
             border-radius: 16px;
             border: 3px solid #ff00ea;
-            box-shadow: 0 0 40px rgba(255, 0, 234, 0.4);
             text-align: center;
         }
         .health-bar-bg {
@@ -147,7 +140,6 @@
             background: linear-gradient(90deg, #ff0055, #ff00ea);
             width: 100%;
             height: 100%;
-            transition: width 0.3s ease;
         }
         .combat-input {
             width: 75%;
@@ -159,7 +151,6 @@
             color: white;
             text-align: center;
             margin-bottom: 20px;
-            outline: none;
         }
         .submit-strike-btn {
             background: linear-gradient(135deg, #00f0ff, #6366f1);
@@ -170,7 +161,6 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
         }
     </style>
 </head>
@@ -198,39 +188,58 @@
         <button class="tab-btn" onclick="switchView('payment-view', this)">💎 UPGRADE PLAN</button>
     </div>
 
+    <!-- Main Workspace Container View Area Panel -->
     <div id="arena-view" class="view-section active">
-        <label for="streamSelect" style="color:#818cf8; font-weight:bold; display:block; margin-bottom:10px; font-size:14px; letter-spacing:1px;">SELECT CURRICULUM UNIVERSE STREAM:</label>
+        <label for="streamSelect" style="color:#818cf8; font-weight:bold; display:block; margin-bottom:10px; font-size:14px;">SELECT CURRICULUM UNIVERSE STREAM:</label>
         <select id="streamSelect" class="stream-selector" onchange="changeActiveUniverse(this.value)">
             <option value="malaysia_sk_national">Malaysia SK National Coursework (Years 1-6 Complete) - BAHASA MELAYU MEDIUM</option>
             <option value="malaysia_sjkc_vernacular">Malaysia SJKC Vernacular Coursework (Years 1-6 Complete) - MANDARIN MEDIUM</option>
             <option value="international_igcse_primary">Cambridge IGCSE Primary Framework (Stages 1-6 Complete) - ENGLISH MEDIUM</option>
         </select>
+        
+        <!-- Only 1 Clean Content Injector Node Present -->
         <div id="syllabus-timeline-injector"></div>
     </div>
 
     <div id="parent-view" class="view-section">
         <div class="report-card">
             <h3 style="color:#00f0ff; margin-top:0; font-size:20px;">📊 AI Root-Cause Diagnostic Analysis</h3>
-            <p>This automated analysis tracks your accuracy across all attempted chapters to pinpoint structural learning gaps blocking grade progression.</p>
-            <hr style="border-color:#4338ca; margin:15px 0;">
             <p><strong>Total Submissions Evaluated:</strong> <span id="stat-attempts" style="color:#00f0ff; font-weight:bold;">0</span></p>
             <p><strong>Current Accuracy Score Index:</strong> <span id="stat-accuracy" style="color:#10b981; font-weight:bold;">0%</span></p>
             <p><strong>Isolated Diagnostic Gap Root Cause:</strong> <span id="stat-weakness" style="color:#f59e0b; font-weight:bold;">No errors submitted yet. Challenge a Boss below to trace gaps.</span></p>
-            <p style="color:#9ca3af; font-size:13px; font-style:italic;">Target Parameter: System tracks metrics dynamically to scale user performance indices up into the 90%+ (A/A+) range for UASA, SPM, and Checkpoint exams.</p>
         </div>
 
         <div class="report-card" style="border-color:#10b981;">
             <h3 style="color:#10b981; margin-top:0; font-size:20px;">📅 Weekly Parent Report Notification Generator</h3>
-            <p style="color:#9ca3af; font-size:14px; margin-bottom:15px;">Automated telemetry output log designed for direct weekly distribution to guardians.</p>
-            <div style="background:#09081a; padding:18px; border-radius:8px; font-family:monospace; color:#34d399; white-space:pre-wrap; line-height:1.6; border:1px solid #10b981;" id="parent-report-text">No active data points recorded for this current calculation cycle. Complete standard operations inside the Quest Arena to compile layout report graphs.</div>
+            <div style="background:#09081a; padding:18px; border-radius:8px; font-family:monospace; color:#34d399; white-space:pre-wrap;" id="parent-report-text">No active data points recorded for this current calculation cycle. Complete standard operations inside the Quest Arena to compile layout report graphs.</div>
         </div>
     </div>
 
     <div id="payment-view" class="view-section">
         <div class="payment-box">
             <h2 style="color:#ff00ea; margin-top:0; font-size:26px;">Unlock Unlimited Academic Mastery</h2>
-            <p style="color:#cbd5e1; font-size:15px; margin-bottom:20px;">Gain exhaustive access to all full chapters across SK, SJKC, and IGCSE with adaptive scaling algorithms.</p>
             <div style="font-size:42px; font-weight:bold; color:white; margin:20px 0;">
-                RM 25.00 <span style="font-size:18px; color:#a78bfa; font-weight:normal;">/ month</span>
+                RM 25.00 <span style="font-size:18px; color:#a78bfa;">/ month</span>
             </div>
-            <p style="color:#9ca3af; font-size:13px; margin-bottom:25px;">Secure transaction handling processing under RM300 capital allocations via Shariah-compliant FPX channels.</p>
+            <button class="pay-btn" onclick="initializeToyyibpayCheckout()">UPGRADE PREMIUM ACCOUNT SECURELY</button>
+        </div>
+    </div>
+</div>
+
+<div id="boss-battle-overlay">
+    <div class="battle-card">
+        <h2 id="battle-boss-name" style="color: #f43f5e; margin-top:0; font-size:24px;">👾 STAGE GUARDIAN DETECTED</h2>
+        <div style="text-align:left; font-size:14px; color:#a78bfa; font-weight:bold; margin-top:10px;" id="battle-quest-count">Quest progression status: Step 1 of 5</div>
+        <div class="health-bar-bg"><div id="boss-hp-fill" class="health-bar-fill"></div></div>
+        
+        <p id="battle-question-text" style="font-size: 18px; line-height: 1.5; color: #fff; margin: 20px 0; font-weight: bold;"></p>
+        <input type="number" id="combat-user-answer" class="combat-input" placeholder="Type numerical value...">
+        <br>
+        <button class="submit-strike-btn" onclick="submitCombatAttackSequence()">LAUNCH MATHEMATICAL STRIKE ⚔️</button>
+        <button class="tab-btn" style="background:transparent; border:none; margin-top:15px; display:block; width:100%; color:#9ca3af; font-size:14px;" onclick="retreatFromBattleField()">Retreat to Base HQ</button>
+    </div>
+</div>
+
+<script>
+const COMPLETE_MATH_SYLLABUS = {
+    "malaysia_sk_national": [
