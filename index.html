@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathHero - Premium Malaysia Learning Portal</title>
+    <title>MathHero - Ultimate Malaysia Academic Accelerator</title>
     <style>
         body {
-            background-color: #0b0a14;
+            background-color: #070612;
             color: #ffffff;
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
@@ -15,154 +15,162 @@
         .cyber-container {
             max-width: 900px;
             margin: 0 auto;
-            background: #121124;
+            background: #111026;
             padding: 30px;
             border-radius: 16px;
             border: 2px solid #6366f1;
-            box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
         }
         .header-panel {
             display: flex;
             justify-content: space-between;
-            background: #1a1936;
+            background: #171638;
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 25px;
-            border-left: 6px solid #06b6d4;
+            border-left: 6px solid #00f0ff;
         }
-        .metric-box h4 { margin: 0; color: #818cf8; font-size: 14px; text-transform: uppercase; }
-        .metric-box div { font-size: 22px; font-weight: bold; color: #06b6d4; }
+        .metric-box h4 { margin: 0; color: #818cf8; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .metric-box div { font-size: 22px; font-weight: bold; color: #00f0ff; margin-top: 5px; }
         .tab-menu {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 25px;
         }
         .tab-btn {
-            background: #1e1b4b;
+            background: #161440;
             color: #818cf8;
             border: 1px solid #6366f1;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 12px 24px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            transition: all 0.2s ease;
         }
         .tab-btn.active {
             background: #6366f1;
             color: #ffffff;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
         }
         .view-section { display: none; }
         .view-section.active { display: block; }
         .quest-node {
-            background: #16152d;
-            padding: 20px;
+            background: #161530;
+            padding: 22px;
             margin: 15px 0;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid #4338ca;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .arena-btn {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 12px 24px;
             font-weight: bold;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: transform 0.2s;
         }
-        .arena-btn:hover { background: #059669; }
+        .arena-btn:hover { transform: scale(1.05); }
         .stream-selector {
             width: 100%;
-            padding: 12px;
-            background: #1a1936;
+            padding: 14px;
+            background: #171638;
             color: white;
-            border: 1px solid #6366f1;
-            border-radius: 6px;
-            margin-bottom: 20px;
+            border: 2px solid #6366f1;
+            border-radius: 8px;
+            margin-bottom: 25px;
             font-size: 16px;
+            font-weight: bold;
         }
         .report-card {
-            background: #1a1936;
-            padding: 20px;
+            background: #171638;
+            padding: 25px;
             border-radius: 12px;
-            border: 1px solid #06b6d4;
-            margin-bottom: 15px;
+            border: 1px solid #00f0ff;
+            margin-bottom: 20px;
         }
         .payment-box {
-            background: linear-gradient(135deg, #1e1b4b, #311042);
-            padding: 30px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #1e1b4b, #2e083a);
+            padding: 40px;
+            border-radius: 14px;
             text-align: center;
-            border: 2px dashed #d946ef;
+            border: 2px dashed #ff00ea;
         }
         .pay-btn {
-            background: #d946ef;
+            background: linear-gradient(135deg, #ff00ea, #aa00ff);
             color: white;
             font-size: 18px;
             font-weight: bold;
-            padding: 15px 40px;
+            padding: 16px 45px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 0 15px rgba(217, 70, 239, 0.4);
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 234, 0.5);
         }
-        
-        /* Interactive Narrative Boss Arena UI */
+
+        /* Narrative Boss Battle View Overlay Overlay UI */
         #boss-battle-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 10, 20, 0.95);
+            background: rgba(6, 5, 14, 0.97);
             z-index: 1000;
             justify-content: center;
             align-items: center;
         }
         .battle-card {
-            background: #1e1b4e;
+            background: #151336;
             width: 90%;
-            max-width: 600px;
-            padding: 30px;
+            max-width: 650px;
+            padding: 35px;
             border-radius: 16px;
-            border: 3px solid #d946ef;
-            box-shadow: 0 0 35px rgba(217, 70, 239, 0.4);
+            border: 3px solid #ff00ea;
+            box-shadow: 0 0 40px rgba(255, 0, 234, 0.4);
             text-align: center;
         }
         .health-bar-bg {
-            background: #374151;
+            background: #2d2b42;
             width: 100%;
-            height: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
+            height: 22px;
+            border-radius: 11px;
+            margin: 18px 0;
             overflow: hidden;
+            border: 1px solid #ff00ea;
         }
         .health-bar-fill {
-            background: linear-gradient(90deg, #ef4444, #f43f5e);
+            background: linear-gradient(90deg, #ff0055, #ff00ea);
             width: 100%;
             height: 100%;
             transition: width 0.3s ease;
         }
         .combat-input {
-            width: 80%;
-            padding: 12px;
-            font-size: 18px;
-            border-radius: 6px;
-            border: 2px solid #6366f1;
-            background: #0f0e1c;
+            width: 75%;
+            padding: 14px;
+            font-size: 20px;
+            border-radius: 8px;
+            border: 2px solid #00f0ff;
+            background: #09081a;
             color: white;
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            outline: none;
         }
         .submit-strike-btn {
-            background: linear-gradient(135deg, #d946ef, #8b5cf6);
+            background: linear-gradient(135deg, #00f0ff, #6366f1);
             color: white;
-            padding: 12px 30px;
+            padding: 14px 35px;
             font-size: 16px;
             font-weight: bold;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
         }
     </style>
 </head>
@@ -171,80 +179,59 @@
 <div class="cyber-container">
     <div class="header-panel">
         <div class="metric-box">
-            <h4>Player Rank</h4>
+            <h4>Global Profile Rank</h4>
             <div id="hud-rank">MATH APPRENTICE</div>
         </div>
         <div class="metric-box">
-            <h4>Combo Streak</h4>
+            <h4>Combo Streak Multiplier</h4>
             <div id="hud-streak">0 🔥</div>
         </div>
         <div class="metric-box">
-            <h4>Account Status</h4>
-            <div id="hud-status" style="color:#ef4444;">FREE TRIAL</div>
+            <h4>Account License Status</h4>
+            <div id="hud-status" style="color:#ff0055;">FREE TRIAL RUN</div>
         </div>
     </div>
 
     <div class="tab-menu">
         <button class="tab-btn active" onclick="switchView('arena-view', this)">⚔️ QUEST ARENA</button>
-        <button class="tab-btn" onclick="switchView('parent-view', this)">📊 PARENT REPORTING</button>
-        <button class="tab-btn" onclick="switchView('payment-view', this)">💎 UPGRADE TO PRO</button>
+        <button class="tab-btn" onclick="switchView('parent-view', this)">📊 DIAGNOSTIC & REPORTS</button>
+        <button class="tab-btn" onclick="switchView('payment-view', this)">💎 UPGRADE PLAN</button>
     </div>
 
     <div id="arena-view" class="view-section active">
-        <label for="streamSelect" style="color:#818cf8; font-weight:bold; display:block; margin-bottom:8px;">SELECT CURRICULUM UNIVERSE:</label>
+        <label for="streamSelect" style="color:#818cf8; font-weight:bold; display:block; margin-bottom:10px; font-size:14px; letter-spacing:1px;">SELECT CURRICULUM UNIVERSE STREAM:</label>
         <select id="streamSelect" class="stream-selector" onchange="changeActiveUniverse(this.value)">
-            <option value="malaysia_sk_national">Malaysia SK National Coursework (Years 1-6 Complete)</option>
-            <option value="malaysia_sjkc_vernacular">Malaysia SJKC Vernacular Coursework (Years 1-6 Complete)</option>
-            <option value="international_igcse_primary">Cambridge IGCSE Primary Framework (Stages 1-6 Complete)</option>
+            <option value="malaysia_sk_national">Malaysia SK National Coursework (Ages 6-12) - BAHASA MELAYU MEDIUM</option>
+            <option value="malaysia_sjkc_vernacular">Malaysia SJKC Vernacular Coursework (Ages 6-12) - MANDARIN MEDIUM</option>
+            <option value="international_igcse_primary">Cambridge IGCSE Primary Framework (Stages 1-6) - ENGLISH MEDIUM</option>
         </select>
         <div id="syllabus-timeline-injector"></div>
     </div>
 
     <div id="parent-view" class="view-section">
         <div class="report-card">
-            <h3 style="color:#06b6d4; margin-top:0;">📊 Real-Time Diagnostic Dashboard</h3>
-            <p><strong>Total Submissions Attempted:</strong> <span id="stat-attempts">0</span> questions</p>
-            <p><strong>Accuracy Index Rate:</strong> <span id="stat-accuracy">0%</span></p>
-            <p><strong>Identified Cognitive Weaknesses:</strong> <span id="stat-weakness" style="color:#f59e0b;">None detected yet</span></p>
+            <h3 style="color:#00f0ff; margin-top:0; font-size:20px;">📊 AI Root-Cause Diagnostic Analysis</h3>
+            <p>This automated analysis tracks your accuracy across all attempted chapters to pinpoint structural learning gaps blocking grade progression.</p>
+            <hr style="border-color:#4338ca; margin:15px 0;">
+            <p><strong>Total Submissions Evaluated:</strong> <span id="stat-attempts" style="color:#00f0ff; font-weight:bold;">0</span></p>
+            <p><strong>Current Accuracy Score Index:</strong> <span id="stat-accuracy" style="color:#10b981; font-weight:bold;">0%</span></p>
+            <p><strong>Isolated Diagnostic Gap Root Cause:</strong> <span id="stat-weakness" style="color:#f59e0b; font-weight:bold;">No errors submitted yet. Challenge a Boss below to trace gaps.</span></p>
+            <p style="color:#9ca3af; font-size:13px; font-style:italic;">Target Parameter: System tracks metrics dynamically to scale user performance indices up into the 90%+ (A/A+) range for UASA, SPM, and Checkpoint exams.</p>
         </div>
 
         <div class="report-card" style="border-color:#10b981;">
-            <h3 style="color:#10b981; margin-top:0;">📅 Weekly Performance Summary Card</h3>
-            <div style="background:#0f0e1c; padding:15px; border-radius:6px; font-family:monospace; color:#34d399;" id="parent-report-text">
-                No history metrics generated for this session week. Complete a chapter quest challenge above to generate metrics.
-            </div>
+            <h3 style="color:#10b981; margin-top:0; font-size:20px;">📅 Weekly Parent Report Notification Generator</h3>
+            <p style="color:#9ca3af; font-size:14px; margin-bottom:15px;">Automated telemetry output log designed for direct weekly distribution to guardians.</p>
+            <div style="background:#09081a; padding:18px; border-radius:8px; font-family:monospace; color:#34d399; white-space:pre-wrap; line-height:1.6; border:1px solid #10b981;" id="parent-report-text">No active data points recorded for this current calculation cycle. Complete standard operations inside the Quest Arena to compile layout report graphs.</div>
         </div>
     </div>
 
     <div id="payment-view" class="view-section">
         <div class="payment-box">
-            <h2 style="color:#d946ef; margin-top:0;">Unlock Unlimited Academic Progress</h2>
-            <div style="font-size:36px; font-weight:bold; color:white; margin:15px 0;">
-                RM 25.00 <span style="font-size:16px; color:#a78bfa;">/ month</span>
+            <h2 style="color:#ff00ea; margin-top:0; font-size:26px;">Unlock Unlimited Academic Mastery</h2>
+            <p style="color:#cbd5e1; font-size:15px; margin-bottom:20px;">Gain exhaustive access to all full chapters across SK, SJKC, and IGCSE with adaptive scaling algorithms.</p>
+            <div style="font-size:42px; font-weight:bold; color:white; margin:20px 0;">
+                RM 25.00 <span style="font-size:18px; color:#a78bfa; font-weight:normal;">/ month</span>
             </div>
-            <button class="pay-btn" onclick="initializeToyyibpayCheckout()">UPGRADE SECURELY VIA TOYYIBPAY</button>
-        </div>
-    </div>
-</div>
-
-<!-- Persistent Narrative Boss Battle Canvas View Grid Overlay Component -->
-<div id="boss-battle-overlay">
-    <div class="battle-card">
-        <h2 id="battle-boss-name" style="color: #f43f5e; margin-top:0;">👾 BOSS ENGAGED</h2>
-        <div style="text-align:left; font-size:14px; color:#a78bfa;" id="battle-quest-count">Quest progression status: Step 1 of 5</div>
-        <div class="health-bar-bg"><div id="boss-hp-fill" class="health-bar-fill"></div></div>
-        
-        <p id="battle-question-text" style="font-size: 20px; font-weight: bold; margin: 25px 0; min-height: 60px; line-height: 1.5; color:#fff;"></p>
-        
-        <input type="number" id="combat-user-answer" class="combat-input" placeholder="Enter output matrix value..." autocomplete="off">
-        <br>
-        <button class="submit-strike-btn" onclick="submitCombatAttackSequence()">LAUNCH MATHEMATICAL STRIKE ⚔️</button>
-        <button class="tab-btn" style="background:transparent; border:none; margin-top:10px; display:block; width:100%; color:#9ca3af;" onclick="retreatFromBattleField()">Retreat to Base</button>
-    </div>
-</div>
-
-<script>
-const COMPLETE_MATH_SYLLABUS = {
-    "malaysia_sk_national": [
-        "Year 1 - Ch 1: Nombor Bulat hingga 100", "Year 1 - Ch 2: Tambah dan Tolak", "Year 1 - Ch 3: Pecahan", "Year 1 - Ch 4: Wang", "Year 1 - Ch 5: Masa dan Waktu", "Year 1 - Ch 6: Panjang, Jisim & Isi Padu", "Year 1 - Ch 7: Bentuk", "Year 1 - Ch 8: Data",
-        "Year 2 - Ch 1: Nombor Bulat hingga 1000", "Year 2 - Ch 2: Tambah, Tolak, Darab, Bahagi", "Year 2 - Ch 3: Pecahan dan Perpuluhan", "Year 2 - Ch 4: Wang", "Year 2 - Ch 5: Masa dan Waktu", "Year 2 - Ch 6: Panjang, Jisim & Isi Padu Cecair", "Year 2 - Ch 7: Bentuk", "Year 2 - Ch 8: Kedudukan", "Year 2 - Ch 9: Data",
+            <p style="color:#9ca3af; font-size:13px; margin-bottom:25px;">Secure transaction handling processing under RM300 capital allocations via Shariah-compliant FPX channels.</p>
+            <button class="pay-btn" onclick="initializeToyyibpayCheckout()">UPGRADE PREMIUM ACCOUNT SECURELY</button>
