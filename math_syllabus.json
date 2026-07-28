@@ -1,39 +1,103 @@
 {
-  "malaysia_complete_math_universe": {
-    "sk_national_track": {
-      "language": "Malay",
-      "framework": "KSSR Semakan / UASA",
-      "years": {
-        "Darjah 1": ["Nombor Bulat hingga 100", "Tambah dan Tolak", "Pecahan Perdua/Perempat", "Wang RM1-RM10", "Masa dan Waktu", "Ukuran Bukan Piawai", "Ruang 3D/2D", "Pengurusan Data Mudah"],
-        "Darjah 2": ["Nombor hingga 1000", "Operasi Asas Tambah/Tolak/Darab/Bahagi", "Pecahan Wajar & Perpuluhan", "Wang hingga RM100", "Masa Gandaan 5 Minit", "Panjang/Jisim/Isipadu Piawai", "Ciri Poligon", "Jadual Tally"],
-        "Darjah 3": ["Nombor hingga 10,000", "Operasi 4 Digit & Anu", "Pecahan Setara & Peratus", "Wang hingga RM10,000", "Senggangan Masa", "Pertukaran Unit Metrik", "Prisma & Paksi Simetri", "Carta Pai"],
-        "Darjah 4": ["Nombor hingga 100,000 & Nombor Perdana", "Operasi Bergabung BODMAS", "Pecahan Bercampur & Perpuluhan", "Pengurusan Kewangan & Liabiliti", "Sistem 24 Jam", "Kargo Metrik mm-km/mg-tan", "Sudut & Perimeter", "Satah Cartesian & Nisbah", "Mod/Median/Min/Julat"],
-        "Darjah 5": ["Nombor hingga 1,000,000 & Pola Formula", "Operasi Bergabung Lanjutan & Anu", "Peratusan melebihi 100%", "Faedah Mudah & Faedah Kompaun", "Tempoh Masa Hari/Jam", "Unit Ukuran Perpuluhan Bercampur", "Sudut Dalaman Poligon", "Nisbah Komposit", "Carta Garis & Kebarangkalian Kualitatif"],
-        "Darjah 6": ["Nombor & Operasi hingga 10 Juta", "Operasi Bergabung Juta Bukan Rutin", "Insurans, Takaful & Cukai", "Zon Masa Dunia & Garis Tarikh", "Integrasi Sukatan Metrik Kompleks", "Geometri 3D Gabungan", "Nisbah Tiga Kuantiti a:b:c", "Taburan Kerap & Kebarangkalian Berangka"]
+  "metadata": {
+    "branding": "MathHero Digital Enterprise",
+    "last_build": "2026-07-28"
+  },
+  "segmented_curriculums": {
+    "SK_UASA": {
+      "Age_6_7": {
+        "topic": "Nombor Bulat hingga 100",
+        "question": "Ali ada 12 pensel warna. Raju memberi 7 pensel warna lagi kepadanya. Berapakah jumlah pensel warna Ali sekarang?",
+        "exam_target": "Standard Baru 2027: UASA Bahagian A - Pemahaman Asas"
+      },
+      "Age_8": {
+        "topic": "Operasi Asas Darab (2, 5, 10)",
+        "question": "Terdapat 4 buah basikal. Setiap basikal mempunyai 2 roda. Berapakah jumlah roda keseluruhannya?",
+        "exam_target": "UASA Pentaksiran Bilik Darjah (PBD)"
+      },
+      "Age_9": {
+        "topic": "Pecahan dan Perpuluhan",
+        "question": "Siti memotong sebiji kek kepada 4 bahagian yang sama besar. Dia makan 1 bahagian. Apakah pecahan kek yang tinggal?",
+        "exam_target": "UASA Bahagian A - Kemahiran Nombor"
+      },
+      "Age_10": {
+        "topic": "Masa, Jisim & Isi Padu Cecair",
+        "question": "Sebuah botol mengandungi 1.5 liter air. Tukarkan isi padu cecair ini kepada mililitir (ml) sepenuhnya.",
+        "exam_target": "UASA Bahagian B - Penyelesaian Masalah"
+      },
+      "Age_11": {
+        "topic": "Pengurusan Data & Purata",
+        "question": "Markah ujian bagi tiga orang murid ialah 80, 85, dan 90. Hitungkan min (purata) markah mereka.",
+        "exam_target": "UASA Kemahiran Berfikir Aras Tinggi (KBAT)"
+      },
+      "Age_12": {
+        "topic": "Peratus & Pengurusan Kewangan",
+        "question": "Harga sebuah kalkulator ialah RM 80. Semasa jualan Hari Raya, diskaun sebanyak 15% diberikan. Hitung harga jualan akhir.",
+        "exam_target": "UASA Bahagian B - Aplikasi Komprehensif"
       }
     },
-    "sjkc_vernacular_track": {
-      "language": "Mandarin",
-      "framework": "KSSR Semakan 华小数学",
-      "years": {
-        "一年级 (Standard 1)": ["100以内的整数", "基本运算", "分数", "钱币", "时间与时刻", "长度、质量与液体的体积", "空间", "数据处理"],
-        "二年级 (Standard 2)": ["1000以内的整数", "四则运算", "分数与小数", "钱币管理", "时间换算", "度量衡", "多边形", "统计图表"],
-        "三年级 (Standard 3)": ["10000以内的整数", "高级基本运算", "分数、小数与百分比", "钱币与储蓄", "时间与时刻", "测量与计算", "空间与对称轴", "数据表示"],
-        "四年级 (Standard 4)": ["100000以内的整数与质数", "混合运算", "带分数与小数乘除", "理财理债", "24小时计时制", "高级度量衡换算", "角度与周长面积", "坐标与比", "统计学基础"],
-        "五年级 (Standard 5)": ["1000000以内的整数", "含有未知数的混合运算", "百分比的数值", "单利与复利", "时间段计算", "小数系统度量衡", "多边形内角", "复合比", "折线图与可能性"],
-        "六年级 (Standard 6)": ["10000000以内的整数与百万分数", "混合运算应用题", "保险与税务", "世界时区", "综合度量衡应用", "组合立体几何", "三项比 a:b:c", "频率分布与概率"]
+    "SJKC_UASA": {
+      "Age_6_7": {
+        "topic": "100\u4ee5\u5185\u7684\u52a0\u51cf\u6cd5\u5e94\u7528",
+        "question": "\u7f8e\u7f8e\u6709 25 \u4e2a\u7ea2\u6c14\u7403\uff0c\u84dd\u6c14\u7403\u6bd4\u7ea2\u6c14\u7403\u5c11 9 \u4e2a\u3002\u7f8e\u7f8e\u4e00\u5171\u6709\u591a\u5c11\u4e2a\u6c14\u7403\uff1f",
+        "exam_target": "2027\u65b0\u653f\u7b56\u6807\u51c6\uff1aUASA \u7532\u7ec4 - \u57fa\u672c\u6982\u5ff5\u5e94\u7528"
+      },
+      "Age_8": {
+        "topic": "\u4e58\u6cd5\u4e0e\u9664\u6cd5\u6982\u5ff5\u5e94\u7528",
+        "question": "\u8001\u5e08\u628a 24 \u652f\u94c5\u7b14\u5e73\u5747\u5206\u7ed9 6 \u4e2a\u540c\u5b66\u3002\u6bcf\u4e2a\u540c\u5b66\u53ef\u4ee5\u5f97\u5230\u591a\u5c11\u652f\u94c5\u7b14\uff1f",
+        "exam_target": "UASA \u8bfe\u5802\u8bc4\u4f30 (PBD) \u6807\u51c6"
+      },
+      "Age_9": {
+        "topic": "\u5206\u6570\u7684\u521d\u6b65\u8ba4\u8bc6\u4e0e\u5927\u5c0f\u6bd4\u8f83",
+        "question": "\u4e00\u4e2a\u897f\u74dc\u5e73\u5747\u5207\u6210 8 \u5757\uff0c\u5c0f\u660e\u5403\u4e86 3 \u5757\uff0c\u5c0f\u7ea2\u5403\u4e86 2 \u5757\u3002\u4ed6\u4eec\u4e00\u5171\u5403\u4e86\u8fd9\u4e2a\u897f\u74dc\u7684\u51e0\u5206\u4e4b\u51e0\uff1f",
+        "exam_target": "UASA \u7532\u7ec4 - \u7b97\u672f\u4e0e\u5206\u6570\u9ad8\u9636\u9898"
+      },
+      "Age_10": {
+        "topic": "\u56fe\u5f62\u7684\u5468\u957f\u4e0e\u9762\u79ef\u8ba1\u7b97",
+        "question": "\u4e00\u4e2a\u957f\u65b9\u5f62\u7684\u957f\u662f 12 \u5398\u7c73\uff0c\u5bbd\u662f 5 \u5398\u7c73\u3002\u8ba1\u7b97\u8fd9\u4e2a\u957f\u65b9\u5f62\u7684\u9762\u79ef\uff08\u5e73\u65b9\u5398\u7c73\uff09\u3002",
+        "exam_target": "UASA \u4e59\u7ec4 - \u7a7a\u95f4\u4e0e\u51e0\u4f55\u89e3\u51b3\u95ee\u9898"
+      },
+      "Age_11": {
+        "topic": "\u5c0f\u6570\u6df7\u5408\u8fd0\u7b97\u4e0e\u5e94\u7528",
+        "question": "\u4e00\u7bb1\u82f9\u679c\u91cd 15.6 \u516c\u65a4\u3002\u5356\u51fa 4.25 \u516c\u65a4\u540e\uff0c\u53c8\u8865\u8fdb 6.8 \u516c\u65a4\u3002\u73b0\u5728\u7bb1\u5b50\u91cc\u6709\u591a\u5c11\u516c\u65a4\u82f9\u679c\uff1f",
+        "exam_target": "UASA \u9ad8\u9636\u601d\u7ef4\u6280\u80fd (KBAT) \u6a21\u62df\u9898"
+      },
+      "Age_12": {
+        "topic": "\u6bd4\u4e0e\u6bd4\u4f8b\u53ca\u7edf\u8ba1\u56fe\u8868",
+        "question": "\u5728\u4e00\u4e2a\u76d2\u5b50\u91cc\uff0c\u7ea2\u7403\u4e0e\u84dd\u7403\u7684\u6bd4\u662f 3:5\u3002\u5982\u679c\u84dd\u7403\u6709 40 \u4e2a\uff0c\u76d2\u5b50\u91cc\u4e00\u5171\u6709\u591a\u5c11\u4e2a\u7403\uff1f",
+        "exam_target": "UASA \u4e59\u7ec4 - \u7efc\u5408\u5e94\u7528\u4e0e\u7edf\u8003\u5907\u8003"
       }
     },
-    "international_school_track_igcse": {
-      "language": "English",
-      "framework": "Cambridge Primary Mathematics Framework",
-      "years": {
-        "Year 1 (Age 5-6)": ["Counting and Subitising to 20", "Number Bonds Foundations", "Halves and Quarters Shapes", "3D/2D Geometrical Solids", "Non-Standard Measurement Balancing", "Calendars and Sequences", "Attribute Categorization"],
-        "Year 2 (Age 6-7)": ["Place Value to 100", "Regrouping within 100", "Multiplication Arrays 2x/5x/10x", "Fractions of Quantities", "Money Stacking and Change", "Analog to Digital Synchronization", "Symmetrical Vertices", "Venn and Carroll Diagrams"],
-        "Year 3 (Age 7-8)": ["Place Value up to 1000", "Three-digit Column Arithmetic", "Grid Method Multiplication", "Fraction Line Crossings", "Metric Systems g/kg/ml/l", "Elapsed Time Intervals", "Compass Vectors and Right Angles", "Frequency Plotting Charts"],
-        "Year 4 (Age 8-9)": ["Negative Numbers to 10k", "Decimal Conversions", "Long Division and Remainders", "Rectilinear Area L x W", "Angle Degree Targeting", "24-Hour Digital Clock Layouts", "Coordinates in First Quadrant"],
-        "Year 5 (Age 9-10)": ["Numbers to 1,000,000 & Rounding", "Fractions/Decimals/Percentages link", "Ratio and Direct Proportions", "3D Shape Net Folds", "Protractor Angle Measurement", "Four Quadrant Coordinates", "Probability Scale 0-1"],
-        "Year 6 (Age 10-11)": ["Primes, Squares & Cube Numbers", "BODMAS Operator Precedence", "Fractional Multiplication/Division", "Simple Algebraic Equations", "Cubic Cargo Volume", "Mean, Median, Mode Analytics", "Probability Tree Diagrams"]
+    "BRITISH_CORE": {
+      "Age_5_6": {
+        "topic": "Number Bonds & Basic Addition",
+        "question": "There are 5 red apples and 4 green apples in a basket. How many fruits are there altogether?",
+        "exam_target": "British Curriculum Year 1 Foundation Assessment"
+      },
+      "Age_7": {
+        "topic": "Simple Sequences & Patterns",
+        "question": "Complete the missing term in the sequence: 5, 10, 15, [ ? ], 25.",
+        "exam_target": "Cambridge Primary Progression Stage 2"
+      },
+      "Age_8": {
+        "topic": "Place Value & 2D Shapes",
+        "question": "In the base-10 number 482, what is the exact value of the digit 8?",
+        "exam_target": "Edexcel Primary Core Year 3 Target"
+      },
+      "Age_9": {
+        "topic": "Fractions & Mental Math Calculations",
+        "question": "John eats 2/6 of a pizza. What fraction of the pizza is remaining?",
+        "exam_target": "Cambridge Primary Progression Stage 4 Test"
+      },
+      "Age_10": {
+        "topic": "Decimals & Measurement Conversions",
+        "question": "A water container holds 2.5 liters of liquid. Convert this capacity into milliliters (ml).",
+        "exam_target": "British Curriculum Key Stage 2 Year 5 Standard"
+      },
+      "Age_11": {
+        "topic": "Foundational Algebraic Expressions",
+        "question": "Simplify the following expression completely: 5x + 3y - 2x + 4y.",
+        "exam_target": "Cambridge Primary Checkpoint Year 6 Diagnostic"
       }
     }
   }
