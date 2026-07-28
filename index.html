@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google" content="notranslate">
     <title>MathHero - Premium Malaysia Learning Portal</title>
     <style>
         :root {
-            --bg-primary: #070612;
-            --surface: #121124;
+            --bg-primary: #05040d;
+            --surface: #0f0e21;
             --accent-glow: #00ffcc;
+            --accent-blue: #00b3ff;
             --text-main: #ffffff;
             --text-dim: #8b8da3;
         }
@@ -21,23 +21,24 @@
             padding: 20px;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             background: var(--surface);
             padding: 30px;
             border-radius: 16px;
-            border: 1px solid rgba(0, 255, 204, 0.2);
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.05);
+            border: 1px solid rgba(0, 255, 204, 0.25);
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.08);
         }
-        h1, h2 {
+        h1 {
             color: var(--accent-glow);
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
         }
         .setup-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -49,12 +50,13 @@
             margin-bottom: 8px;
             color: var(--text-dim);
             font-weight: bold;
+            font-size: 14px;
         }
         select, input {
-            background: #1c1a36;
+            background: #171533;
             color: white;
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
+            padding: 14px;
             border-radius: 8px;
             font-size: 16px;
             outline: none;
@@ -62,49 +64,69 @@
         }
         select:focus, input:focus {
             border-color: var(--accent-glow);
-            box-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
         }
         .btn {
             background: linear-gradient(135deg, #00ffcc, #00b3ff);
             color: #000;
             border: none;
-            padding: 15px 30px;
+            padding: 16px 30px;
             font-size: 18px;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             transition: 0.3s;
         }
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.4);
+            box-shadow: 0 5px 20px rgba(0, 255, 204, 0.5);
         }
         .game-canvas-area {
             margin-top: 30px;
-            background: #0a0918;
+            background: #070614;
             border-radius: 12px;
-            padding: 25px;
-            min-height: 300px;
-            border: 1px dashed rgba(255,255,255,0.1);
-            position: relative;
+            padding: 30px;
+            min-height: 350px;
+            border: 1px solid rgba(255,255,255,0.08);
         }
         .metric-badge {
             display: inline-block;
             background: rgba(0, 255, 204, 0.1);
             color: var(--accent-glow);
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: bold;
-            margin-bottom: 15px;
+            border: 1px solid rgba(0, 255, 204, 0.2);
         }
         .hidden { display: none; }
-        .feedback { font-weight: bold; margin-top: 15px; font-size: 18px; }
+        .feedback { font-weight: bold; margin-top: 20px; font-size: 18px; }
         .success { color: #00ff66; }
         .error { color: #ff3366; }
+        
+        .progression-tracker {
+            background: #13112b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .progress-bar-bg {
+            background: #201d40;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #00ffcc, #00b3ff);
+            height: 100%;
+            width: 20%;
+            transition: width 0.5s ease;
+        }
     </style>
 </head>
 <body>
@@ -112,15 +134,27 @@
 <div class="container">
     <h1>🚀 MathHero Universal Gamified Engine</h1>
     
-    <div id="account-status-bar" style="text-align: right; margin-bottom: 20px;">
-        <span class="metric-badge" id="tier-display">Tier Status: Free Trial (3 Days Left)</span>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="metric-badge" id="tier-display">Tier Status: Free Trial</div>
+        <div>
+            <span style="color: gold; font-weight: bold; margin-right: 15px;">🪙 Coins: <span id="coin-counter">0</span></span>
+            <span style="color: #00ffcc; font-weight: bold;">⭐ XP: <span id="xp-counter">0</span></span>
+        </div>
+    </div>
+
+    <div class="progression-tracker">
+        <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: bold;">
+            <span style="color: var(--text-dim);">🎯 1-Month Grade Acceleration (Target: A+ / &gt;90%)</span>
+            <span style="color: var(--accent-glow)" id="grade-tracker-display">Current Standing: 20% (Fail)</span>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill-node"></div></div>
     </div>
 
     <div class="setup-grid">
         <div class="control-group">
             <label for="track-select">Choose School Track / Syllabus</label>
             <select id="track-select" onchange="syncSyllabusDropdowns()">
-                <option value="sk">SK National Track (Malay / KSSR)</option>
+                <option value="sk">SK National Track (Malay / KSSR / UASA)</option>
                 <option value="sjkc">SJKC Vernacular Track (Mandarin / 华小)</option>
                 <option value="igcse">IGCSE International Track (English / Cambridge)</option>
             </select>
@@ -143,107 +177,67 @@
 
     <div class="game-canvas-area">
         <div id="game-lobby-message">
-            <h3 style="text-align:center; color: var(--text-dim); margin-top: 100px;">Configure your parameters above to initialize the module.</h3>
+            <h3 style="text-align:center; color: var(--text-dim); margin-top: 120px;">Configure your parameters above to initialize the gaming module.</h3>
         </div>
         
         <div id="active-arena" class="hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="metric-badge" id="game-title-display">Quest Loaded</span>
-                <div>
-                    <span style="color: gold; font-weight: bold; margin-right: 15px;">🪙 Coins: <span id="coin-counter">0</span></span>
-                    <span style="color: #00ffcc; font-weight: bold;">⭐ XP: <span id="xp-counter">0</span></span>
-                </div>
-            </div>
+            <div class="metric-badge" id="game-title-display">Quest Loaded</div>
             
-            <div id="gameplay-viewport" style="background: #111026; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.05);">
+            <div id="gameplay-viewport" style="background: #111026; padding: 25px; border-radius: 8px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.08); font-size: 18px; line-height: 1.6;">
             </div>
             
             <div class="control-group" id="input-container">
             </div>
-            <button class="btn" style="margin-top:15px;" onclick="evaluateUserAction()">Submit Action</button>
+            <button class="btn" style="margin-top:20px;" onclick="evaluateUserAction()">Submit Action</button>
             <div id="arena-feedback" class="feedback"></div>
         </div>
     </div>
     
-    <div id="paywall-gate" class="hidden" style="margin-top: 30px; padding: 25px; background: rgba(255, 51, 102, 0.1); border-radius: 12px; border: 1px solid #ff3366; text-align: center;">
-        <h3 style="color: #ff3366; margin-top: 0;">🔒 PREMIUM MILESTONE LOCKED</h3>
-        <p>Your 3-day free trial limit has been reached. Subscribe to premium for RM 35 monthly renewal.</p>
-        <button class="btn" style="background: linear-gradient(135deg, #ff3366, #ff0055); color: white;" onclick="triggerSubscriptionPurchase()">Unlock All Modules Now</button>
+    <div id="paywall-gate" class="hidden" style="margin-top: 30px; padding: 30px; background: rgba(255, 51, 102, 0.1); border-radius: 12px; border: 1px solid #ff3366; text-align: center;">
+        <h3 style="color: #ff3366; margin-top: 0;">🔒 PREMIUM MOCK EXAMS LOCKED</h3>
+        <p style="color: var(--text-dim);">Your free trial limit has been reached. Subscribe to premium mode for RM 35 monthly renewal to unlock past-year exam simulation mode and automatic parent progress reports.</p>
+        <button class="btn" style="background: linear-gradient(135deg, #ff3366, #ff0055); color: white; max-width: 350px;" onclick="triggerSubscriptionPurchase()">Unlock All Modules Now</button>
     </div>
 </div>
 
 <script>
-const syllabusDatabase = {
-    sk: {
-        years: ["Darjah 1", "Darjah 2", "Darjah 3", "Darjah 4", "Darjah 5", "Darjah 6"],
-        chapters: {
-            "Darjah 1": [
-                {id:"SK_Y1_C1", title:"C1: Nombor Bulat hingga 100", game:"Misi Pulau Angka", problem:"Susun nombor berikut mengikut tertib menaik: 14, 8, 29, 21.", answer:"8,14,21,29", type:"game"},
-                {id:"SK_Y1_P1", title:"[EXAM] Kertas Model UASA Pertengahan Tahun", problem:"Selesaikan: Syafiq ada 12 guli. Danial memberi 7 guli lagi. Berapakah jumlah guli Syafiq?", answer:"19", type:"exam"}
-            ],
-            "Darjah 6": [
-                {id:"SK_Y6_C3", title:"C3: Wang & Pengurusan Cukai", game:"Simulasi Cukai Pendapatan", problem:"Hitung cukai perkhidmatan 6% bagi bil makanan bernilai RM150.", answer:"9", type:"game"}
-            ]
-        }
+const trackDataManifest = {
+    "sk": {
+        levels: ["Darjah 1", "Darjah 2", "Darjah 3", "Darjah 4", "Darjah 5", "Darjah 6"],
+        chapters: [
+            "C1: Nombor Bulat & Nilai Tempat", "C2: Operasi Asas (Tambah/Tolak/Darab/Bahagi)", 
+            "C3: Pecahan, Perpuluhan & Peratus", "C4: Wang & Pengurusan Kewangan", 
+            "C5: Masa dan Waktu", "C6: Ukuran & Sukatan Metrik", 
+            "C7: Ruang & Poligon Geometri", "C8: Koordinat, Nisbah & Kadaran", 
+            "C9: Pengurusan Data & Kebarangkalian", "[EXAM] Kertas Soalan Past Year Ramalan UASA"
+        ],
+        gameTitle: "Misi Kembara Rimba Math",
+        promptText: "Selesaikan cabaran pentaksiran: Hitung gandaan berikut untuk melepasi halangan: "
     },
-    sjkc: {
-        years: ["一年级 (Standard 1)", "二年级 (Standard 2)", "三年级 (Standard 3)", "四年级 (Standard 4)", "五年级 (Standard 5)", "六年级 (Standard 6)"],
-        chapters: {
-            "一年级 (Standard 1)": [
-                {id:"SJKC_Y1_C1", title:"C1: 100以内的整数", game:"火箭密码倒数", problem:"写出数字45的十位近似值。", answer:"50", type:"game"}
-            ]
-        }
+    "sjkc": {
+        levels: ["一年级 (Standard 1)", "二年级 (Standard 2)", "三年级 (Standard 3)", "四年级 (Standard 4)", "五年级 (Standard 5)", "六年级 (Standard 6)"],
+        chapters: [
+            "C1: 整数与基本运算", "C2: 乘除四则混合运算与未知数", 
+            "C3: 分数、小数与百分比的关系", "C4: 钱币理财与税务保险计算", 
+            "C5: 时间与时刻 / 时区换算", "C6: 长度、质量与液体的体积度量衡", 
+            "C7: 空间、角度、周长与多边形面积", "C8: 笛卡尔坐标、比与比例 (a:b:c)", 
+            "C9: 数据处理与概率基础", "[EXAM] 华小统考与UASA模拟真实过去试卷"
+        ],
+        gameTitle: "数码太空基地作战",
+        promptText: "请运用课本所学，正确解答以下应用题以激活安全密码："
     },
-    igcse: {
-        years: ["Year 1 (Age 5-6)", "Year 2 (Age 6-7)", "Year 3 (Age 7-8)", "Year 4 (Age 8-9)", "Year 5 (Age 9-10)", "Year 6 (Age 10-11)"],
-        chapters: {
-            "Year 6 (Age 10-11)": [
-                {id:"IG_Y6_C2", title:"C2: Order of Operations (BODMAS)", game:"Nuclear Core Calibration", problem:"Evaluate the expression: 12 + 4 x (15 - 9) / 2", answer:"24", type:"game"}
-            ]
-        }
+    "igcse": {
+        levels: ["Year 1 (Age 5-6)", "Year 2 (Age 6-7)", "Year 3 (Age 7-8)", "Year 4 (Age 8-9)", "Year 5 (Age 9-10)", "Year 6 (Age 10-11)"],
+        chapters: [
+            "C1: Base-10 Place Value Systems & Rounding Rules", "C2: Calculation Strategies & BODMAS Operations", 
+            "C3: Fractions, Decimals & Percentages Equivalences", "C4: Ratio, Direct Proportion & Scaling Multipliers", 
+            "C5: Time Systems, Analog/Digital Timetables", "C6: Standard Metric Measurements (g/kg/ml/l/cm/m)", 
+            "C7: Geometry Properties, Nets, Angles & Symmetry", "C8: Coordinates Vector Framework (4 Quadrants)", 
+            "C9: Statistics, Venn Diagrams & Probability Trees", "[EXAM] Cambridge Primary Checkpoint Past Year Exam Paper"
+        ],
+        gameTitle: "Galaxy Resource Trader",
+        promptText: "Solve the following IGCSE foundation milestone puzzle to unlock core materials: "
     }
 };
 
 let currentTrack = 'sk';
-let currentYear = '';
-let currentActiveModule = null;
-let currentStudentScoreTracker = { baseline: 45, current: 45, itemsAnswered: 0 };
-let userWallet = { xp: 120, coins: 40 };
-let isSubscribedUser = false;
-
-function syncSyllabusDropdowns() {
-    currentTrack = document.getElementById('track-select').value;
-    const yearSelect = document.getElementById('year-select');
-    const chapterSelect = document.getElementById('chapter-select');
-    const trackData = syllabusDatabase[currentTrack];
-    
-    const savedYearIdx = yearSelect.selectedIndex >= 0 ? yearSelect.selectedIndex : 0;
-    yearSelect.innerHTML = "";
-    trackData.years.forEach(y => {
-        let opt = document.createElement('option');
-        opt.value = y; opt.innerText = y;
-        yearSelect.appendChild(opt);
-    });
-    
-    yearSelect.selectedIndex = savedYearIdx < yearSelect.options.length ? savedYearIdx : 0;
-    currentYear = yearSelect.value;
-    
-    chapterSelect.innerHTML = "";
-    const displayChapters = trackData.chapters[currentYear] || [
-        {id:"placeholder", title:"Semua Sub-topik Buku Teks Terkini Lengkap", problem:"Selesaikan asas matematik.", answer:"0", type:"game"}
-    ];
-    
-    displayChapters.forEach(ch => {
-        let opt = document.createElement('option');
-        opt.value = ch.id; opt.innerText = ch.title;
-        chapterSelect.appendChild(opt);
-    });
-}
-
-function launchGamifiedModule() {
-    document.getElementById('game-lobby-message').classList.add('hidden');
-    document.getElementById('active-arena').classList.remove('hidden');
-    
-    const targetId = document.getElementById('chapter-select').value;
-    const trackChapters = syllabusDatabase[currentTrack].chapters[currentYear] || [];
-    currentActiveModule = trackChapters.find(c => c.id === targetId) || {
